@@ -35,7 +35,6 @@ import xcffib.xinerama
 import xcffib.xproto
 import time
 import warnings
-import tracemalloc
 
 from ..config import Drag, Click, Screen, Match, Rule
 from ..config import ScratchPad as ScratchPadConfig
@@ -81,6 +80,7 @@ class Qtile(command.CommandObject):
 
         self._eventloop = None
         self._finalize = False
+        self.mouse_position = (0,0)
 
         if not display_name:
             display_name = os.environ.get("DISPLAY")
@@ -984,6 +984,7 @@ class Qtile(command.CommandObject):
         self.conn.conn.flush()
 
     def handle_ButtonPress(self, e):  # noqa: N802
+        self.mouse_position = (e.event_x, e.event_y)
         button_code = e.detail
         state = e.state
         if self.numlock_mask:
@@ -1056,6 +1057,7 @@ class Qtile(command.CommandObject):
                 self.root.ungrab_pointer()
 
     def handle_MotionNotify(self, e):  # noqa: N802
+        self.mouse_position = (e.event_x, e.event_y)
         if self._drag is None:
             return
         ox, oy, rx, ry, cmd = self._drag
@@ -1276,6 +1278,9 @@ class Qtile(command.CommandObject):
         """Prints info for all groups"""
         warnings.warn("The `get_info` command is deprecated, use `groups`", DeprecationWarning)
         return self.cmd_groups()
+
+    def get_mouse_position(self):
+      return self.mouse_position
 
     def cmd_display_kb(self, *args):
         """Display table of key bindings"""
@@ -1854,6 +1859,8 @@ class Qtile(command.CommandObject):
 
         Running tracemalloc is required for qtile-top
         """
+        import tracemalloc
+
         if not tracemalloc.is_tracing():
             tracemalloc.start()
         else:
@@ -1861,6 +1868,8 @@ class Qtile(command.CommandObject):
 
     def cmd_tracemalloc_dump(self):
         """Dump tracemalloc snapshot"""
+        import tracemalloc
+
         if not tracemalloc.is_tracing():
             return [False, "Trace not started"]
         cache_directory = get_cache_dir()
