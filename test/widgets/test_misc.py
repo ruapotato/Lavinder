@@ -22,9 +22,9 @@
 # Widget specific tests
 
 import pytest
-from libqtile.config import Screen
-from libqtile.bar import Bar
-from libqtile.widget import TextBox, ThermalSensor
+from liblavinder.config import Screen
+from liblavinder.bar import Bar
+from liblavinder.widget import TextBox, ThermalSensor
 from ..conftest import BareConfig
 
 
@@ -44,16 +44,16 @@ class WidgetTestConf(BareConfig):
     screens = [Screen(bottom=Bar([ColorChanger(name="colorchanger")], 20))]
 
 
-widget_conf = pytest.mark.parametrize("qtile", [WidgetTestConf], indirect=True)
+widget_conf = pytest.mark.parametrize("lavinder", [WidgetTestConf], indirect=True)
 
 
 @widget_conf
-def test_textbox_color_change(qtile):
-    qtile.c.widget["colorchanger"].update('f')
-    assert qtile.c.widget["colorchanger"].info()["foreground"] == "0000ff"
+def test_textbox_color_change(lavinder):
+    lavinder.c.widget["colorchanger"].update('f')
+    assert lavinder.c.widget["colorchanger"].info()["foreground"] == "0000ff"
 
-    qtile.c.widget["colorchanger"].update('f')
-    assert qtile.c.widget["colorchanger"].info()["foreground"] == "ff0000"
+    lavinder.c.widget["colorchanger"].update('f')
+    assert lavinder.c.widget["colorchanger"].info()["foreground"] == "ff0000"
 
 
 def test_thermalsensor_regex_compatibility():

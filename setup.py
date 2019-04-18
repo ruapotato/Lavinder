@@ -67,7 +67,7 @@ class CheckCairoXcb(install):
 setup(
     cmdclass={'install': CheckCairoXcb},
     cffi_modules=[
-        'libqtile/pango_ffi_build.py:pango_ffi',
-        'libqtile/core/xcursors_ffi_build.py:xcursors_ffi',
+        'liblavinder/pango_ffi_build.py:pango_ffi',
+        'liblavinder/core/xcursors_ffi_build.py:xcursors_ffi',
     ],
 )

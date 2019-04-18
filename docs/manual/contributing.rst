@@ -5,8 +5,8 @@ Contributing
 Reporting bugs
 ==============
 
-Perhaps the easiest way to contribute to Qtile is to report any bugs you
-run into on the `github issue tracker <https://github.com/qtile/qtile/issues>`_.
+Perhaps the easiest way to contribute to Lavinder is to report any bugs you
+run into on the `github issue tracker <https://github.com/lavinder/lavinder/issues>`_.
 
 Useful bug reports are ones that get bugs fixed. A useful bug report normally
 has two qualities:
@@ -24,7 +24,7 @@ has two qualities:
 Writing code
 ============
 
-To get started writing code for Qtile, check out our guide to :doc:`hacking`.
+To get started writing code for Lavinder, check out our guide to :doc:`hacking`.
 
 Git workflow
 ------------
@@ -49,10 +49,10 @@ We also request that git commit messages follow the
 Submit a pull request
 ---------------------
 
-You've done your hacking and are ready to submit your patch to Qtile. Great!
+You've done your hacking and are ready to submit your patch to Lavinder. Great!
 Now it's time to submit a
 `pull request <https://help.github.com/articles/using-pull-requests>`_
-to our `issue tracker <https://github.com/qtile/qtile/issues>`_ on Github.
+to our `issue tracker <https://github.com/lavinder/lavinder/issues>`_ on Github.
 
 .. important::
 

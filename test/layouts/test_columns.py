@@ -19,8 +19,8 @@
 
 import pytest
 
-from libqtile import layout
-import libqtile.config
+from liblavinder import layout
+import liblavinder.config
 from ..conftest import no_xinerama
 from .layout_utils import assert_focused, assert_focus_path
 
@@ -29,15 +29,15 @@ class ColumnsConfig:
     auto_fullscreen = True
     main = None
     groups = [
-        libqtile.config.Group("a"),
-        libqtile.config.Group("b"),
-        libqtile.config.Group("c"),
-        libqtile.config.Group("d")
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("b"),
+        liblavinder.config.Group("c"),
+        liblavinder.config.Group("d")
     ]
     layouts = [
         layout.Columns(),
     ]
-    floating_layout = libqtile.layout.floating.Floating()
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = []
     mouse = []
     screens = []
@@ -45,27 +45,27 @@ class ColumnsConfig:
 
 
 def columns_config(x):
-    return no_xinerama(pytest.mark.parametrize("qtile", [ColumnsConfig], indirect=True)(x))
+    return no_xinerama(pytest.mark.parametrize("lavinder", [ColumnsConfig], indirect=True)(x))
 
 # This currently only tests the window focus cycle
 
 
 @columns_config
-def test_columns_window_focus_cycle(qtile):
+def test_columns_window_focus_cycle(lavinder):
     # setup 3 tiled and two floating clients
-    qtile.test_window("one")
-    qtile.test_window("two")
-    qtile.test_window("float1")
-    qtile.c.window.toggle_floating()
-    qtile.test_window("float2")
-    qtile.c.window.toggle_floating()
-    qtile.test_window("three")
+    lavinder.test_window("one")
+    lavinder.test_window("two")
+    lavinder.test_window("float1")
+    lavinder.c.window.toggle_floating()
+    lavinder.test_window("float2")
+    lavinder.c.window.toggle_floating()
+    lavinder.test_window("three")
 
     # test preconditions, columns adds clients at pos after current, in two stacks
-    assert qtile.c.layout.info()['columns'][0]['clients'] == ['one']
-    assert qtile.c.layout.info()['columns'][1]['clients'] == ['three', 'two']
+    assert lavinder.c.layout.info()['columns'][0]['clients'] == ['one']
+    assert lavinder.c.layout.info()['columns'][1]['clients'] == ['three', 'two']
     # last added window has focus
-    assert_focused(qtile, "three")
+    assert_focused(lavinder, "three")
 
     # assert window focus cycle, according to order in layout
-    assert_focus_path(qtile, 'two', 'float1', 'float2', 'one', 'three')
+    assert_focus_path(lavinder, 'two', 'float1', 'float2', 'one', 'three')

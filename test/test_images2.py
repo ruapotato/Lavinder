@@ -1,5 +1,5 @@
 """
-test_images2.py tests libqtile.images.Img for rendering quality
+test_images2.py tests liblavinder.images.Img for rendering quality
 by comparing known good and bad images to images rendered using
 Img().
 
@@ -7,7 +7,7 @@ Image similarity / distance is calculated using imagemagick's convert
 utility.
 """
 import pytest
-import libqtile.images as images
+import liblavinder.images as images
 import cairocffi
 import subprocess as sp
 from collections import namedtuple
@@ -87,7 +87,7 @@ def compare_images_all_metrics(test_img, reference_img):
 
 @pytest.fixture(scope='function', params=SVGS)
 def svg_img(request):
-    "svg_img returns an instance of libqtile.images.Img()"
+    "svg_img returns an instance of liblavinder.images.Img()"
     fpath = request.param
     return images.Img.from_path(fpath)
 

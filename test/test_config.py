@@ -23,9 +23,9 @@
 import os
 import pytest
 
-from libqtile import confreader
-from libqtile import config, utils
-from libqtile.core import xcore
+from liblavinder import confreader
+from liblavinder import config, utils
+from liblavinder.core import xcore
 
 tests_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -84,16 +84,16 @@ def test_ezkey():
     assert key.key == 'Tab'
     assert key.commands == (cmd,)
 
-    with pytest.raises(utils.QtileError):
+    with pytest.raises(utils.LavinderError):
         config.EzKey('M--', cmd)
 
-    with pytest.raises(utils.QtileError):
+    with pytest.raises(utils.LavinderError):
         config.EzKey('Z-Z-z', cmd)
 
-    with pytest.raises(utils.QtileError):
+    with pytest.raises(utils.LavinderError):
         config.EzKey('asdf', cmd)
 
-    with pytest.raises(utils.QtileError):
+    with pytest.raises(utils.LavinderError):
         config.EzKey('M-a-A', cmd)
 
 

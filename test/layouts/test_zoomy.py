@@ -27,8 +27,8 @@
 
 import pytest
 
-from libqtile import layout
-import libqtile.config
+from liblavinder import layout
+import liblavinder.config
 from .layout_utils import assert_dimensions, assert_focused, assert_focus_path
 from ..conftest import no_xinerama
 
@@ -37,48 +37,48 @@ class ZoomyConfig:
     auto_fullscreen = True
     main = None
     groups = [
-        libqtile.config.Group("a"),
+        liblavinder.config.Group("a"),
     ]
     layouts = [
         layout.Zoomy(columnwidth=200),
     ]
-    floating_layout = libqtile.layout.floating.Floating()
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = []
     mouse = []
     screens = []
 
 
 def zoomy_config(x):
-    return no_xinerama(pytest.mark.parametrize("qtile", [ZoomyConfig], indirect=True)(x))
+    return no_xinerama(pytest.mark.parametrize("lavinder", [ZoomyConfig], indirect=True)(x))
 
 
 @zoomy_config
-def test_zoomy_one(qtile):
-    qtile.test_window('one')
-    assert_dimensions(qtile, 0, 0, 600, 600)
-    qtile.test_window('two')
-    assert_dimensions(qtile, 0, 0, 600, 600)
-    qtile.test_window('three')
-    assert_dimensions(qtile, 0, 0, 600, 600)
-    assert_focus_path(qtile, 'two', 'one', 'three')
+def test_zoomy_one(lavinder):
+    lavinder.test_window('one')
+    assert_dimensions(lavinder, 0, 0, 600, 600)
+    lavinder.test_window('two')
+    assert_dimensions(lavinder, 0, 0, 600, 600)
+    lavinder.test_window('three')
+    assert_dimensions(lavinder, 0, 0, 600, 600)
+    assert_focus_path(lavinder, 'two', 'one', 'three')
     # TODO(pc) find a way to check size of inactive windows
 
 
 @zoomy_config
-def test_zoomy_window_focus_cycle(qtile):
+def test_zoomy_window_focus_cycle(lavinder):
     # setup 3 tiled and two floating clients
-    qtile.test_window("one")
-    qtile.test_window("two")
-    qtile.test_window("float1")
-    qtile.c.window.toggle_floating()
-    qtile.test_window("float2")
-    qtile.c.window.toggle_floating()
-    qtile.test_window("three")
+    lavinder.test_window("one")
+    lavinder.test_window("two")
+    lavinder.test_window("float1")
+    lavinder.c.window.toggle_floating()
+    lavinder.test_window("float2")
+    lavinder.c.window.toggle_floating()
+    lavinder.test_window("three")
 
     # test preconditions, Zoomy adds clients at head
-    assert qtile.c.layout.info()['clients'] == ['three', 'two', 'one']
+    assert lavinder.c.layout.info()['clients'] == ['three', 'two', 'one']
     # last added window has focus
-    assert_focused(qtile, "three")
+    assert_focused(lavinder, "three")
 
     # assert window focus cycle, according to order in layout
-    assert_focus_path(qtile, 'two', 'one', 'float1', 'float2', 'three')
+    assert_focus_path(lavinder, 'two', 'one', 'float1', 'float2', 'three')

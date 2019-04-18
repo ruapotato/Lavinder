@@ -12,21 +12,21 @@ check:
 
 .PHONY: check-cov
 check-cov:
-	pytest --verbose --with-cov libqtile --cov-report term-missing
+	pytest --verbose --with-cov liblavinder --cov-report term-missing
 
 .PHONY: lint
 lint:
-	flake8 ./libqtile bin/q* ./test
+	flake8 ./liblavinder bin/q* ./test
 
 .PHONY: ckpatch
 ckpatch: lint check
 
 .PHONY: clean
 clean:
-	-rm -rf dist qtile.egg-info docs/_build build/
+	-rm -rf dist lavinder.egg-info docs/_build build/
 
 # This is a little ugly: we want to be able to have users just run
-# 'python setup.py install' to install qtile, but we would also like to install
+# 'python setup.py install' to install lavinder, but we would also like to install
 # the man pages. I can't figure out a way to have the 'build' target invoke the
 # 'build_sphinx' target as well, so we commit the man pages, since they are
 # used in the 'install' target.

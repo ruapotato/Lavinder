@@ -24,11 +24,11 @@
 
 import pytest
 
-import libqtile.layout
-import libqtile.bar
-import libqtile.widget
-import libqtile.config
-import libqtile.confreader
+import liblavinder.layout
+import liblavinder.bar
+import liblavinder.widget
+import liblavinder.config
+import liblavinder.confreader
 
 
 class GBConfig:
@@ -36,40 +36,40 @@ class GBConfig:
     keys = []
     mouse = []
     groups = [
-        libqtile.config.Group("a"),
-        libqtile.config.Group("bb"),
-        libqtile.config.Group("ccc"),
-        libqtile.config.Group("dddd"),
-        libqtile.config.Group("Pppy")
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("bb"),
+        liblavinder.config.Group("ccc"),
+        liblavinder.config.Group("dddd"),
+        liblavinder.config.Group("Pppy")
     ]
-    layouts = [libqtile.layout.stack.Stack(num_stacks=1)]
-    floating_layout = libqtile.layout.floating.Floating()
+    layouts = [liblavinder.layout.stack.Stack(num_stacks=1)]
+    floating_layout = liblavinder.layout.floating.Floating()
     screens = [
-        libqtile.config.Screen(
-            top=libqtile.bar.Bar(
+        liblavinder.config.Screen(
+            top=liblavinder.bar.Bar(
                 [
-                    libqtile.widget.CPUGraph(
-                        width=libqtile.bar.STRETCH,
+                    liblavinder.widget.CPUGraph(
+                        width=liblavinder.bar.STRETCH,
                         type="linefill",
                         border_width=20,
                         margin_x=1,
                         margin_y=1
                     ),
-                    libqtile.widget.MemoryGraph(type="line"),
-                    libqtile.widget.SwapGraph(type="box"),
-                    libqtile.widget.TextBox(name="text",
+                    liblavinder.widget.MemoryGraph(type="line"),
+                    liblavinder.widget.SwapGraph(type="box"),
+                    liblavinder.widget.TextBox(name="text",
                                             background="333333"),
                 ],
                 50,
             ),
-            bottom=libqtile.bar.Bar(
+            bottom=liblavinder.bar.Bar(
                 [
-                    libqtile.widget.GroupBox(),
-                    libqtile.widget.AGroupBox(),
-                    libqtile.widget.Prompt(),
-                    libqtile.widget.WindowName(),
-                    libqtile.widget.Sep(),
-                    libqtile.widget.Clock(),
+                    liblavinder.widget.GroupBox(),
+                    liblavinder.widget.AGroupBox(),
+                    liblavinder.widget.Prompt(),
+                    liblavinder.widget.WindowName(),
+                    liblavinder.widget.Sep(),
+                    liblavinder.widget.Clock(),
                 ],
                 50
             ),
@@ -79,11 +79,11 @@ class GBConfig:
     main = None
 
 
-gb_config = pytest.mark.parametrize("qtile", [GBConfig], indirect=True)
+gb_config = pytest.mark.parametrize("lavinder", [GBConfig], indirect=True)
 
 
 def test_completion():
-    c = libqtile.widget.prompt.CommandCompleter(None, True)
+    c = liblavinder.widget.prompt.CommandCompleter(None, True)
     c.reset()
     c.lookup = [
         ("a", "x/a"),
@@ -94,7 +94,7 @@ def test_completion():
     assert c.complete("a") == "aa"
     assert c.complete("a") == "a"
 
-    c = libqtile.widget.prompt.CommandCompleter(None)
+    c = liblavinder.widget.prompt.CommandCompleter(None)
     r = c.complete("l")
     assert c.actual().endswith(r)
 
@@ -113,56 +113,56 @@ def test_completion():
 
 
 @gb_config
-def test_draw(qtile):
-    qtile.test_window("one")
-    b = qtile.c.bar["bottom"].info()
+def test_draw(lavinder):
+    lavinder.test_window("one")
+    b = lavinder.c.bar["bottom"].info()
     assert b["widgets"][0]["name"] == "groupbox"
 
 
 @gb_config
-def test_prompt(qtile):
-    assert qtile.c.widget["prompt"].info()["width"] == 0
-    qtile.c.spawncmd(":")
-    qtile.c.widget["prompt"].fake_keypress("a")
-    qtile.c.widget["prompt"].fake_keypress("Tab")
+def test_prompt(lavinder):
+    assert lavinder.c.widget["prompt"].info()["width"] == 0
+    lavinder.c.spawncmd(":")
+    lavinder.c.widget["prompt"].fake_keypress("a")
+    lavinder.c.widget["prompt"].fake_keypress("Tab")
 
-    qtile.c.spawncmd(":")
-    qtile.c.widget["prompt"].fake_keypress("slash")
-    qtile.c.widget["prompt"].fake_keypress("Tab")
-
-
-@gb_config
-def test_event(qtile):
-    qtile.c.group["bb"].toscreen()
+    lavinder.c.spawncmd(":")
+    lavinder.c.widget["prompt"].fake_keypress("slash")
+    lavinder.c.widget["prompt"].fake_keypress("Tab")
 
 
 @gb_config
-def test_textbox(qtile):
-    assert "text" in qtile.c.list_widgets()
+def test_event(lavinder):
+    lavinder.c.group["bb"].toscreen()
+
+
+@gb_config
+def test_textbox(lavinder):
+    assert "text" in lavinder.c.list_widgets()
     s = "some text"
-    qtile.c.widget["text"].update(s)
-    assert qtile.c.widget["text"].get() == s
+    lavinder.c.widget["text"].update(s)
+    assert lavinder.c.widget["text"].get() == s
     s = "Aye, much longer string than the initial one"
-    qtile.c.widget["text"].update(s)
-    assert qtile.c.widget["text"].get() == s
-    qtile.c.group["Pppy"].toscreen()
-    qtile.c.widget["text"].set_font(fontsize=12)
+    lavinder.c.widget["text"].update(s)
+    assert lavinder.c.widget["text"].get() == s
+    lavinder.c.group["Pppy"].toscreen()
+    lavinder.c.widget["text"].set_font(fontsize=12)
 
 
 @gb_config
-def test_textbox_errors(qtile):
-    qtile.c.widget["text"].update(None)
-    qtile.c.widget["text"].update("".join(chr(i) for i in range(255)))
-    qtile.c.widget["text"].update("V\xE2r\xE2na\xE7\xEE")
-    qtile.c.widget["text"].update("\ua000")
+def test_textbox_errors(lavinder):
+    lavinder.c.widget["text"].update(None)
+    lavinder.c.widget["text"].update("".join(chr(i) for i in range(255)))
+    lavinder.c.widget["text"].update("V\xE2r\xE2na\xE7\xEE")
+    lavinder.c.widget["text"].update("\ua000")
 
 
 @gb_config
-def test_groupbox_button_press(qtile):
-    qtile.c.group["ccc"].toscreen()
-    assert qtile.c.groups()["a"]["screen"] is None
-    qtile.c.bar["bottom"].fake_button_press(0, "bottom", 10, 10, 1)
-    assert qtile.c.groups()["a"]["screen"] == 0
+def test_groupbox_button_press(lavinder):
+    lavinder.c.group["ccc"].toscreen()
+    assert lavinder.c.groups()["a"]["screen"] is None
+    lavinder.c.bar["bottom"].fake_button_press(0, "bottom", 10, 10, 1)
+    assert lavinder.c.groups()["a"]["screen"] == 0
 
 
 class GeomConf:
@@ -171,35 +171,35 @@ class GeomConf:
     keys = []
     mouse = []
     groups = [
-        libqtile.config.Group("a"),
-        libqtile.config.Group("b"),
-        libqtile.config.Group("c"),
-        libqtile.config.Group("d")
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("b"),
+        liblavinder.config.Group("c"),
+        liblavinder.config.Group("d")
     ]
-    layouts = [libqtile.layout.stack.Stack(num_stacks=1)]
-    floating_layout = libqtile.layout.floating.Floating()
+    layouts = [liblavinder.layout.stack.Stack(num_stacks=1)]
+    floating_layout = liblavinder.layout.floating.Floating()
     screens = [
-        libqtile.config.Screen(
-            top=libqtile.bar.Bar([], 10),
-            bottom=libqtile.bar.Bar([], 10),
-            left=libqtile.bar.Bar([], 10),
-            right=libqtile.bar.Bar([], 10),
+        liblavinder.config.Screen(
+            top=liblavinder.bar.Bar([], 10),
+            bottom=liblavinder.bar.Bar([], 10),
+            left=liblavinder.bar.Bar([], 10),
+            right=liblavinder.bar.Bar([], 10),
         )
     ]
 
 
-geom_config = pytest.mark.parametrize("qtile", [GeomConf], indirect=True)
+geom_config = pytest.mark.parametrize("lavinder", [GeomConf], indirect=True)
 
 
-class DBarH(libqtile.bar.Bar):
+class DBarH(liblavinder.bar.Bar):
     def __init__(self, widgets, size):
-        libqtile.bar.Bar.__init__(self, widgets, size)
+        liblavinder.bar.Bar.__init__(self, widgets, size)
         self.horizontal = True
 
 
-class DBarV(libqtile.bar.Bar):
+class DBarV(liblavinder.bar.Bar):
     def __init__(self, widgets, size):
-        libqtile.bar.Bar.__init__(self, widgets, size)
+        liblavinder.bar.Bar.__init__(self, widgets, size)
         self.horizontal = False
 
 
@@ -209,27 +209,27 @@ class DWidget:
 
 
 @geom_config
-def test_geometry(qtile):
-    qtile.test_xeyes()
-    g = qtile.c.screens()[0]["gaps"]
+def test_geometry(lavinder):
+    lavinder.test_xeyes()
+    g = lavinder.c.screens()[0]["gaps"]
     assert g["top"] == (0, 0, 800, 10)
     assert g["bottom"] == (0, 590, 800, 10)
     assert g["left"] == (0, 10, 10, 580)
     assert g["right"] == (790, 10, 10, 580)
-    assert len(qtile.c.windows()) == 1
-    geom = qtile.c.windows()[0]
+    assert len(lavinder.c.windows()) == 1
+    geom = lavinder.c.windows()[0]
     assert geom["x"] == 10
     assert geom["y"] == 10
     assert geom["width"] == 778
     assert geom["height"] == 578
-    internal = qtile.c.internal_windows()
+    internal = lavinder.c.internal_windows()
     assert len(internal) == 4
-    wid = qtile.c.bar["bottom"].info()["window"]
-    assert qtile.c.window[wid].inspect()
+    wid = lavinder.c.bar["bottom"].info()["window"]
+    assert lavinder.c.window[wid].inspect()
 
 
 @geom_config
-def test_resize(qtile):
+def test_resize(lavinder):
     def wd(l):
         return [i.length for i in l]
 
@@ -243,10 +243,10 @@ def test_resize(qtile):
         b = DBar([], 100)
 
         dwidget_list = [
-            DWidget(10, libqtile.bar.CALCULATED),
-            DWidget(None, libqtile.bar.STRETCH),
-            DWidget(None, libqtile.bar.STRETCH),
-            DWidget(10, libqtile.bar.CALCULATED),
+            DWidget(10, liblavinder.bar.CALCULATED),
+            DWidget(None, liblavinder.bar.STRETCH),
+            DWidget(None, liblavinder.bar.STRETCH),
+            DWidget(10, liblavinder.bar.CALCULATED),
         ]
         b._resize(100, dwidget_list)
         assert wd(dwidget_list) == [10, 40, 40, 10]
@@ -257,43 +257,43 @@ def test_resize(qtile):
         assert off(dwidget_list) == [0, 10, 50, 91]
 
         dwidget_list = [
-            DWidget(10, libqtile.bar.CALCULATED)
+            DWidget(10, liblavinder.bar.CALCULATED)
         ]
         b._resize(100, dwidget_list)
         assert wd(dwidget_list) == [10]
         assert off(dwidget_list) == [0]
 
         dwidget_list = [
-            DWidget(10, libqtile.bar.CALCULATED),
-            DWidget(None, libqtile.bar.STRETCH)
+            DWidget(10, liblavinder.bar.CALCULATED),
+            DWidget(None, liblavinder.bar.STRETCH)
         ]
         b._resize(100, dwidget_list)
         assert wd(dwidget_list) == [10, 90]
         assert off(dwidget_list) == [0, 10]
 
         dwidget_list = [
-            DWidget(None, libqtile.bar.STRETCH),
-            DWidget(10, libqtile.bar.CALCULATED),
+            DWidget(None, liblavinder.bar.STRETCH),
+            DWidget(10, liblavinder.bar.CALCULATED),
         ]
         b._resize(100, dwidget_list)
         assert wd(dwidget_list) == [90, 10]
         assert off(dwidget_list) == [0, 90]
 
         dwidget_list = [
-            DWidget(10, libqtile.bar.CALCULATED),
-            DWidget(None, libqtile.bar.STRETCH),
-            DWidget(10, libqtile.bar.CALCULATED),
+            DWidget(10, liblavinder.bar.CALCULATED),
+            DWidget(None, liblavinder.bar.STRETCH),
+            DWidget(10, liblavinder.bar.CALCULATED),
         ]
         b._resize(100, dwidget_list)
         assert wd(dwidget_list) == [10, 80, 10]
         assert off(dwidget_list) == [0, 10, 90]
 
 
-class ExampleWidget(libqtile.widget.base._Widget):
-    orientations = libqtile.widget.base.ORIENTATION_HORIZONTAL
+class ExampleWidget(liblavinder.widget.base._Widget):
+    orientations = liblavinder.widget.base.ORIENTATION_HORIZONTAL
 
     def __init__(self):
-        libqtile.widget.base._Widget.__init__(self, 10)
+        liblavinder.widget.base._Widget.__init__(self, 10)
 
     def draw(self):
         pass
@@ -303,12 +303,12 @@ class IncompatibleWidgetConf:
     main = None
     keys = []
     mouse = []
-    groups = [libqtile.config.Group("a")]
-    layouts = [libqtile.layout.stack.Stack(num_stacks=1)]
-    floating_layout = libqtile.layout.floating.Floating()
+    groups = [liblavinder.config.Group("a")]
+    layouts = [liblavinder.layout.stack.Stack(num_stacks=1)]
+    floating_layout = liblavinder.layout.floating.Floating()
     screens = [
-        libqtile.config.Screen(
-            left=libqtile.bar.Bar(
+        liblavinder.config.Screen(
+            left=liblavinder.bar.Bar(
                 [
                     # This widget doesn't support vertical orientation
                     ExampleWidget(),
@@ -319,28 +319,28 @@ class IncompatibleWidgetConf:
     ]
 
 
-def test_incompatible_widget(qtile_nospawn):
+def test_incompatible_widget(lavinder_nospawn):
     config = IncompatibleWidgetConf
 
     # Ensure that adding a widget that doesn't support the orientation of the
     # bar raises ConfigError
-    with pytest.raises(libqtile.confreader.ConfigError):
-        qtile_nospawn.create_manager(config)
+    with pytest.raises(liblavinder.confreader.ConfigError):
+        lavinder_nospawn.create_manager(config)
 
 
 class MultiStretchConf:
     main = None
     keys = []
     mouse = []
-    groups = [libqtile.config.Group("a")]
-    layouts = [libqtile.layout.stack.Stack(num_stacks=1)]
-    floating_layout = libqtile.layout.floating.Floating()
+    groups = [liblavinder.config.Group("a")]
+    layouts = [liblavinder.layout.stack.Stack(num_stacks=1)]
+    floating_layout = liblavinder.layout.floating.Floating()
     screens = [
-        libqtile.config.Screen(
-            top=libqtile.bar.Bar(
+        liblavinder.config.Screen(
+            top=liblavinder.bar.Bar(
                 [
-                    libqtile.widget.Spacer(libqtile.bar.STRETCH),
-                    libqtile.widget.Spacer(libqtile.bar.STRETCH),
+                    liblavinder.widget.Spacer(liblavinder.bar.STRETCH),
+                    liblavinder.widget.Spacer(liblavinder.bar.STRETCH),
                 ],
                 10
             ),
@@ -348,22 +348,22 @@ class MultiStretchConf:
     ]
 
 
-def test_multiple_stretches(qtile_nospawn):
+def test_multiple_stretches(lavinder_nospawn):
     config = MultiStretchConf
 
     # Ensure that adding two STRETCH widgets to the same bar raises ConfigError
-    with pytest.raises(libqtile.confreader.ConfigError):
-        qtile_nospawn.create_manager(config)
+    with pytest.raises(liblavinder.confreader.ConfigError):
+        lavinder_nospawn.create_manager(config)
 
 
-def test_basic(qtile_nospawn):
+def test_basic(lavinder_nospawn):
     config = GeomConf
     config.screens = [
-        libqtile.config.Screen(
-            bottom=libqtile.bar.Bar(
+        liblavinder.config.Screen(
+            bottom=liblavinder.bar.Bar(
                 [
                     ExampleWidget(),
-                    libqtile.widget.Spacer(libqtile.bar.STRETCH),
+                    liblavinder.widget.Spacer(liblavinder.bar.STRETCH),
                     ExampleWidget()
                 ],
                 10
@@ -371,42 +371,42 @@ def test_basic(qtile_nospawn):
         )
     ]
 
-    qtile_nospawn.start(config)
+    lavinder_nospawn.start(config)
 
-    i = qtile_nospawn.c.bar["bottom"].info()
+    i = lavinder_nospawn.c.bar["bottom"].info()
     assert i["widgets"][0]["offset"] == 0
     assert i["widgets"][1]["offset"] == 10
     assert i["widgets"][1]["width"] == 780
     assert i["widgets"][2]["offset"] == 790
-    libqtile.hook.clear()
+    liblavinder.hook.clear()
 
 
-def test_singlespacer(qtile_nospawn):
+def test_singlespacer(lavinder_nospawn):
     config = GeomConf
     config.screens = [
-        libqtile.config.Screen(
-            bottom=libqtile.bar.Bar(
+        liblavinder.config.Screen(
+            bottom=liblavinder.bar.Bar(
                 [
-                    libqtile.widget.Spacer(libqtile.bar.STRETCH),
+                    liblavinder.widget.Spacer(liblavinder.bar.STRETCH),
                 ],
                 10
             )
         )
     ]
 
-    qtile_nospawn.start(config)
+    lavinder_nospawn.start(config)
 
-    i = qtile_nospawn.c.bar["bottom"].info()
+    i = lavinder_nospawn.c.bar["bottom"].info()
     assert i["widgets"][0]["offset"] == 0
     assert i["widgets"][0]["width"] == 800
-    libqtile.hook.clear()
+    liblavinder.hook.clear()
 
 
-def test_nospacer(qtile_nospawn):
+def test_nospacer(lavinder_nospawn):
     config = GeomConf
     config.screens = [
-        libqtile.config.Screen(
-            bottom=libqtile.bar.Bar(
+        liblavinder.config.Screen(
+            bottom=liblavinder.bar.Bar(
                 [
                     ExampleWidget(),
                     ExampleWidget()
@@ -416,9 +416,9 @@ def test_nospacer(qtile_nospawn):
         )
     ]
 
-    qtile_nospawn.start(config)
+    lavinder_nospawn.start(config)
 
-    i = qtile_nospawn.c.bar["bottom"].info()
+    i = lavinder_nospawn.c.bar["bottom"].info()
     assert i["widgets"][0]["offset"] == 0
     assert i["widgets"][1]["offset"] == 10
-    libqtile.hook.clear()
+    liblavinder.hook.clear()

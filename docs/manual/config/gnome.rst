@@ -2,9 +2,9 @@
 Running Inside Gnome
 ====================
 
-Add the following snippet to your Qtile configuration. As per `this
+Add the following snippet to your Lavinder configuration. As per `this
 page <https://wiki.gnome.org/Projects/SessionManagement/GnomeSession#A3._Register>`_,
-it registers Qtile with gnome-session. Without it, a "Something has gone
+it registers Lavinder with gnome-session. Without it, a "Something has gone
 wrong!" message shows up a short while after logging in. dbus-send must
 be on your $PATH.
 
@@ -12,7 +12,7 @@ be on your $PATH.
 
     import subprocess
     import os
-    from libqtile import hook
+    from liblavinder import hook
 
     @hook.subscribe.startup
     def dbus_register():
@@ -25,48 +25,48 @@ be on your $PATH.
                           '--dest=org.gnome.SessionManager',
                           '/org/gnome/SessionManager',
                           'org.gnome.SessionManager.RegisterClient',
-                          'string:qtile',
+                          'string:lavinder',
                           'string:' + id])
 
-This adds a new entry "Qtile GNOME" to GDM's login screen.
+This adds a new entry "Lavinder GNOME" to GDM's login screen.
 
 ::
 
-    $ cat /usr/share/xsessions/qtile_gnome.desktop
+    $ cat /usr/share/xsessions/lavinder_gnome.desktop
     [Desktop Entry]
-    Name=Qtile GNOME
+    Name=Lavinder GNOME
     Comment=Tiling window manager
     TryExec=/usr/bin/gnome-session
-    Exec=gnome-session --session=qtile
+    Exec=gnome-session --session=lavinder
     Type=XSession
 
 The custom session for gnome-session.
 
 ::
 
-    $ cat /usr/share/gnome-session/sessions/qtile.session
+    $ cat /usr/share/gnome-session/sessions/lavinder.session
     [GNOME Session]
-    Name=Qtile session
-    RequiredComponents=qtile;gnome-settings-daemon;
+    Name=Lavinder session
+    RequiredComponents=lavinder;gnome-settings-daemon;
 
-So that Qtile starts automatically on login.
+So that Lavinder starts automatically on login.
 
 ::
 
-    $ cat /usr/share/applications/qtile.desktop
+    $ cat /usr/share/applications/lavinder.desktop
     [Desktop Entry]
     Type=Application
     Encoding=UTF-8
-    Name=Qtile
-    Exec=qtile
+    Name=Lavinder
+    Exec=lavinder
     NoDisplay=true
-    X-GNOME-WMName=Qtile
+    X-GNOME-WMName=Lavinder
     X-GNOME-Autostart-Phase=WindowManager
     X-GNOME-Provides=windowmanager
     X-GNOME-Autostart-Notify=false
 
 The above does not start gnome-panel. Getting gnome-panel to work
-requires some extra Qtile configuration, mainly making the top and
+requires some extra Lavinder configuration, mainly making the top and
 bottom panels static on panel startup and leaving a gap at the top (and
 bottom) for the panel window.
 

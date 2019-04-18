@@ -20,12 +20,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import libqtile
-import libqtile.ipc
-from libqtile.core.manager import Qtile as QtileManager
-from libqtile.core import xcore
-from libqtile.log_utils import init_log
-from libqtile.resources import default_config
+import liblavinder
+import liblavinder.ipc
+from liblavinder.core.manager import Lavinder as LavinderManager
+from liblavinder.core import xcore
+from liblavinder.log_utils import init_log
+from liblavinder.resources import default_config
 
 import functools
 import logging
@@ -95,9 +95,9 @@ def can_connect_x11(disp=':0'):
     return True
 
 
-@Retry(ignore_exceptions=(libqtile.ipc.IPCError,), return_on_fail=True)
-def can_connect_qtile(socket_path):
-    client = libqtile.command.Client(socket_path)
+@Retry(ignore_exceptions=(liblavinder.ipc.IPCError,), return_on_fail=True)
+def can_connect_lavinder(socket_path):
+    client = liblavinder.command.Client(socket_path)
     val = client.status()
     if val == 'OK':
         return True
@@ -122,30 +122,30 @@ def whereis(program):
 class BareConfig:
     auto_fullscreen = True
     groups = [
-        libqtile.config.Group("a"),
-        libqtile.config.Group("b"),
-        libqtile.config.Group("c"),
-        libqtile.config.Group("d")
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("b"),
+        liblavinder.config.Group("c"),
+        liblavinder.config.Group("d")
     ]
     layouts = [
-        libqtile.layout.stack.Stack(num_stacks=1),
-        libqtile.layout.stack.Stack(num_stacks=2)
+        liblavinder.layout.stack.Stack(num_stacks=1),
+        liblavinder.layout.stack.Stack(num_stacks=2)
     ]
-    floating_layout = libqtile.layout.floating.Floating()
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = [
-        libqtile.config.Key(
+        liblavinder.config.Key(
             ["control"],
             "k",
-            libqtile.command._Call([("layout", None)], "up")
+            liblavinder.command._Call([("layout", None)], "up")
         ),
-        libqtile.config.Key(
+        liblavinder.config.Key(
             ["control"],
             "j",
-            libqtile.command._Call([("layout", None)], "down")
+            liblavinder.command._Call([("layout", None)], "down")
         ),
     ]
     mouse = []
-    screens = [libqtile.config.Screen()]
+    screens = [liblavinder.config.Screen()]
     main = None
     follow_mouse_focus = False
 
@@ -198,7 +198,7 @@ class Xephyr:
         args = [
             "Xephyr",
             "-name",
-            "qtile_test",
+            "lavinder_test",
             self.display,
             "-ac",
             "-screen",
@@ -238,12 +238,12 @@ class Xephyr:
         self.proc = None
 
 
-class Qtile:
-    """Spawn a Qtile instance
+class Lavinder:
+    """Spawn a Lavinder instance
 
-    Setup a qtile server instance on the given display, with the given socket
-    and log files.  The qtile server must be started, and then stopped when it
-    is done.  Windows can be spawned for the qtile instance to interact with
+    Setup a lavinder server instance on the given display, with the given socket
+    and log files.  The lavinder server must be started, and then stopped when it
+    is done.  Windows can be spawned for the lavinder instance to interact with
     with various `.test_*` methods.
     """
     def __init__(self, sockfile, display):
@@ -257,30 +257,30 @@ class Qtile:
     def start(self, config_class):
         rpipe, wpipe = multiprocessing.Pipe()
 
-        def run_qtile():
+        def run_lavinder():
             llvl = logging.DEBUG if pytest.config.getoption("--debuglog") else logging.INFO
             kore = xcore.XCore()
             try:
                 init_log(llvl, log_path=None, log_color=False)
-                q = QtileManager(kore, config_class(), self.display, self.sockfile)
+                q = LavinderManager(kore, config_class(), self.display, self.sockfile)
                 q.loop()
             except Exception:
                 wpipe.send(traceback.format_exc())
 
-        self.proc = multiprocessing.Process(target=run_qtile)
+        self.proc = multiprocessing.Process(target=run_lavinder)
         self.proc.start()
 
         # First, wait for socket to appear
-        if can_connect_qtile(self.sockfile):
-            self.c = libqtile.command.Client(self.sockfile)
+        if can_connect_lavinder(self.sockfile):
+            self.c = liblavinder.command.Client(self.sockfile)
             return
         if rpipe.poll(sleep_time):
             error = rpipe.recv()
-            raise AssertionError("Error launching Qtile, traceback:\n%s" % error)
-        raise AssertionError("Error launching Qtile")
+            raise AssertionError("Error launching Lavinder, traceback:\n%s" % error)
+        raise AssertionError("Error launching Lavinder")
 
     def create_manager(self, config_class):
-        """Create a Qtile manager instance in this thread
+        """Create a Lavinder manager instance in this thread
 
         This should only be used when it is known that the manager will throw
         an error and the returned manager should not be started, otherwise this
@@ -294,11 +294,11 @@ class Qtile:
             if not hasattr(config, attr):
                 setattr(config, attr, getattr(default_config, attr))
 
-        return QtileManager(kore, config, self.display, self.sockfile)
+        return LavinderManager(kore, config, self.display, self.sockfile)
 
     def terminate(self):
         if self.proc is None:
-            print("Qtile is not alive", file=sys.stderr)
+            print("Lavinder is not alive", file=sys.stderr)
         else:
             # try to send SIGTERM and wait up to 10 sec to quit
             self.proc.terminate()
@@ -314,7 +314,7 @@ class Qtile:
                     pass
 
             if self.proc.exitcode:
-                print("Qtile exited with exitcode: %d" % self.proc.exitcode, file=sys.stderr)
+                print("Lavinder exited with exitcode: %d" % self.proc.exitcode, file=sys.stderr)
 
             self.proc = None
 
@@ -328,7 +328,7 @@ class Qtile:
         """Starts a program which opens a window
 
         Spawns a new subprocess for a command that opens a window, given by the
-        arguments to this method.  Spawns the new process and checks that qtile
+        arguments to this method.  Spawns the new process and checks that lavinder
         maps the new window.
         """
         if not args:
@@ -359,10 +359,10 @@ class Qtile:
         return self._spawn_window(python, path, *args)
 
     def kill_window(self, proc):
-        """Kill a window and check that qtile unmaps it
+        """Kill a window and check that lavinder unmaps it
 
         Kills a window created by calling one of the `self.test*` methods,
-        ensuring that qtile removes it from the `windows` attribute.
+        ensuring that lavinder removes it from the `windows` attribute.
         """
         assert proc in self.testwindows, "Given process is not a spawned window"
         start = len(self.c.windows())
@@ -450,7 +450,7 @@ def xephyr(request, xvfb):
 
 
 @pytest.fixture(scope="function")
-def qtile(request, xephyr):
+def lavinder(request, xephyr):
     config = getattr(request, "param", BareConfig)
 
     for attr in dir(default_config):
@@ -459,7 +459,7 @@ def qtile(request, xephyr):
 
     with tempfile.NamedTemporaryFile() as f:
         sockfile = f.name
-        q = Qtile(sockfile, xephyr.display)
+        q = Lavinder(sockfile, xephyr.display)
         try:
             q.start(config)
 
@@ -469,10 +469,10 @@ def qtile(request, xephyr):
 
 
 @pytest.fixture(scope="function")
-def qtile_nospawn(request, xephyr):
+def lavinder_nospawn(request, xephyr):
     with tempfile.NamedTemporaryFile() as f:
         sockfile = f.name
-        q = Qtile(sockfile, xephyr.display)
+        q = Lavinder(sockfile, xephyr.display)
 
         try:
             yield q

@@ -45,7 +45,7 @@ LICENSE="#
 # SOFTWARE.
 "
 
-files=$(licensecheck -r . | grep -v 'bin/libqtile' | grep UNKNOWN | cut -d: -f1)
+files=$(licensecheck -r . | grep -v 'bin/liblavinder' | grep UNKNOWN | cut -d: -f1)
 
 for f in $files; do
     { echo "$($COPYRIGHT "$f")"; echo "$LICENSE"; cat "$f"; } > newfile && mv newfile "$f"

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Lavinder
+Comment=Lavinder Session
+Exec=lavinder
+Type=Application
+Keywords=wm;tiling

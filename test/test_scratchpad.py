@@ -20,11 +20,11 @@
 
 import pytest
 
-import libqtile.layout
-import libqtile.bar
-import libqtile.widget
-import libqtile.config
-import libqtile.scratchpad
+import liblavinder.layout
+import liblavinder.bar
+import liblavinder.widget
+import liblavinder.config
+import liblavinder.scratchpad
 
 # import .conftest
 from .conftest import Retry
@@ -37,196 +37,196 @@ class ScratchPadBaseConfic:
     main = None
     screens = []
     groups = [
-        libqtile.config.ScratchPad('SCRATCHPAD', dropdowns=[
-            libqtile.config.DropDown('dd-a', 'xterm -T dd-a sh', on_focus_lost_hide=False),
-            libqtile.config.DropDown('dd-b', 'xterm -T dd-b sh', on_focus_lost_hide=False),
-            libqtile.config.DropDown('dd-c', 'xterm -T dd-c sh', on_focus_lost_hide=True),
-            libqtile.config.DropDown('dd-d', 'xterm -T dd-d sh', on_focus_lost_hide=True)
+        liblavinder.config.ScratchPad('SCRATCHPAD', dropdowns=[
+            liblavinder.config.DropDown('dd-a', 'xterm -T dd-a sh', on_focus_lost_hide=False),
+            liblavinder.config.DropDown('dd-b', 'xterm -T dd-b sh', on_focus_lost_hide=False),
+            liblavinder.config.DropDown('dd-c', 'xterm -T dd-c sh', on_focus_lost_hide=True),
+            liblavinder.config.DropDown('dd-d', 'xterm -T dd-d sh', on_focus_lost_hide=True)
         ]),
-        libqtile.config.Group("a"),
-        libqtile.config.Group("b"),
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("b"),
     ]
-    layouts = [libqtile.layout.max.Max()]
-    floating_layout = libqtile.layout.floating.Floating()
+    layouts = [liblavinder.layout.max.Max()]
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = []
     mouse = []
 
 
 # scratchpad_config = lambda x:
 def scratchpad_config(x):
-    return no_xinerama(pytest.mark.parametrize("qtile", [ScratchPadBaseConfic], indirect=True)(x))
+    return no_xinerama(pytest.mark.parametrize("lavinder", [ScratchPadBaseConfic], indirect=True)(x))
 
 
 @Retry(ignore_exceptions=(KeyError,))
-def is_spawned(qtile, name):
-    qtile.c.group["SCRATCHPAD"].dropdown_info(name)['window']
+def is_spawned(lavinder, name):
+    lavinder.c.group["SCRATCHPAD"].dropdown_info(name)['window']
     return True
 
 
 @Retry(ignore_exceptions=(ValueError,))
-def is_killed(qtile, name):
-    if 'window' not in qtile.c.group["SCRATCHPAD"].dropdown_info(name):
+def is_killed(lavinder, name):
+    if 'window' not in lavinder.c.group["SCRATCHPAD"].dropdown_info(name):
         return True
     raise ValueError('not yet killed')
 
 
 @scratchpad_config
-def test_toggling(qtile):
+def test_toggling(lavinder):
     # adjust command for current display
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % qtile.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
 
-    qtile.test_window("one")
-    assert qtile.c.group["a"].info()['windows'] == ['one']
+    lavinder.test_window("one")
+    assert lavinder.c.group["a"].info()['windows'] == ['one']
 
     # First toggling: wait for window
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    is_spawned(qtile, 'dd-a')
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    is_spawned(lavinder, 'dd-a')
 
     # assert window in current group "a"
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-a', 'one']
-    assert_focused(qtile, 'dd-a')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-a', 'one']
+    assert_focused(lavinder, 'dd-a')
 
     # toggle again --> "hide" xterm in scratchpad group
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    assert qtile.c.group["a"].info()['windows'] == ['one']
-    assert_focused(qtile, 'one')
-    assert qtile.c.group["SCRATCHPAD"].info()['windows'] == ['dd-a']
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    assert lavinder.c.group["a"].info()['windows'] == ['one']
+    assert_focused(lavinder, 'one')
+    assert lavinder.c.group["SCRATCHPAD"].info()['windows'] == ['dd-a']
 
     # toggle again --> show again
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-a', 'one']
-    assert_focused(qtile, 'dd-a')
-    assert qtile.c.group["SCRATCHPAD"].info()['windows'] == []
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-a', 'one']
+    assert_focused(lavinder, 'dd-a')
+    assert lavinder.c.group["SCRATCHPAD"].info()['windows'] == []
 
 
 @scratchpad_config
-def test_focus_cycle(qtile):
+def test_focus_cycle(lavinder):
     # adjust command for current display
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % qtile.display)
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-b', command='xterm -T dd-b -display %s sh' % qtile.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-b', command='xterm -T dd-b -display %s sh' % lavinder.display)
 
-    qtile.test_window("one")
+    lavinder.test_window("one")
     # spawn dd-a by toggling
-    assert_focused(qtile, 'one')
+    assert_focused(lavinder, 'one')
 
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    is_spawned(qtile, 'dd-a')
-    assert_focused(qtile, 'dd-a')
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    is_spawned(lavinder, 'dd-a')
+    assert_focused(lavinder, 'dd-a')
 
-    qtile.test_window("two")
-    assert_focused(qtile, 'two')
+    lavinder.test_window("two")
+    assert_focused(lavinder, 'two')
 
     # spawn dd-b by toggling
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-b')
-    is_spawned(qtile, 'dd-b')
-    assert_focused(qtile, 'dd-b')
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-b')
+    is_spawned(lavinder, 'dd-b')
+    assert_focused(lavinder, 'dd-b')
 
     # check all windows
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-a', 'dd-b', 'one', 'two']
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-a', 'dd-b', 'one', 'two']
 
-    assert_focus_path(qtile, 'one', 'two', 'dd-a', 'dd-b')
+    assert_focus_path(lavinder, 'one', 'two', 'dd-a', 'dd-b')
 
 
 @scratchpad_config
-def test_focus_lost_hide(qtile):
+def test_focus_lost_hide(lavinder):
     # adjust command for current display
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-c', command='xterm -T dd-c -display %s sh' % qtile.display)
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-d', command='xterm -T dd-d -display %s sh' % qtile.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-c', command='xterm -T dd-c -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-d', command='xterm -T dd-d -display %s sh' % lavinder.display)
 
-    qtile.test_window("one")
-    assert_focused(qtile, 'one')
+    lavinder.test_window("one")
+    assert_focused(lavinder, 'one')
 
     # spawn dd-c by toggling
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-c')
-    is_spawned(qtile, 'dd-c')
-    assert_focused(qtile, 'dd-c')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-c', 'one']
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-c')
+    is_spawned(lavinder, 'dd-c')
+    assert_focused(lavinder, 'dd-c')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-c', 'one']
 
     # New Window with Focus --> hide current DropDown
-    qtile.test_window("two")
-    assert_focused(qtile, 'two')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['one', 'two']
-    assert sorted(qtile.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c']
+    lavinder.test_window("two")
+    assert_focused(lavinder, 'two')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['one', 'two']
+    assert sorted(lavinder.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c']
 
     # spawn dd-b by toggling
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-d')
-    is_spawned(qtile, 'dd-d')
-    assert_focused(qtile, 'dd-d')
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-d')
+    is_spawned(lavinder, 'dd-d')
+    assert_focused(lavinder, 'dd-d')
 
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-d', 'one', 'two']
-    assert sorted(qtile.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c']
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-d', 'one', 'two']
+    assert sorted(lavinder.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c']
 
     # focus next, is the first tiled window --> "hide" dd-d
-    qtile.c.group.next_window()
-    assert_focused(qtile, 'one')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['one', 'two']
-    assert sorted(qtile.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c', 'dd-d']
+    lavinder.c.group.next_window()
+    assert_focused(lavinder, 'one')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['one', 'two']
+    assert sorted(lavinder.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c', 'dd-d']
 
     # Bring dd-c to front
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-c')
-    assert_focused(qtile, 'dd-c')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-c', 'one', 'two']
-    assert sorted(qtile.c.group["SCRATCHPAD"].info()['windows']) == ['dd-d']
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-c')
+    assert_focused(lavinder, 'dd-c')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-c', 'one', 'two']
+    assert sorted(lavinder.c.group["SCRATCHPAD"].info()['windows']) == ['dd-d']
 
     # Bring dd-d to front --> "hide dd-c
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-d')
-    assert_focused(qtile, 'dd-d')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-d', 'one', 'two']
-    assert sorted(qtile.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c']
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-d')
+    assert_focused(lavinder, 'dd-d')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-d', 'one', 'two']
+    assert sorted(lavinder.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c']
 
     # change current group to "b" hids DropDowns
-    qtile.c.group['b'].toscreen()
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['one', 'two']
-    assert sorted(qtile.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c', 'dd-d']
+    lavinder.c.group['b'].toscreen()
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['one', 'two']
+    assert sorted(lavinder.c.group["SCRATCHPAD"].info()['windows']) == ['dd-c', 'dd-d']
 
 
 @scratchpad_config
-def test_kill(qtile):
+def test_kill(lavinder):
     # adjust command for current display
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % qtile.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
 
-    qtile.test_window("one")
-    assert_focused(qtile, 'one')
+    lavinder.test_window("one")
+    assert_focused(lavinder, 'one')
 
     # dd-a has no window associated yet
-    assert 'window' not in qtile.c.group["SCRATCHPAD"].dropdown_info('dd-a')
+    assert 'window' not in lavinder.c.group["SCRATCHPAD"].dropdown_info('dd-a')
 
     # First toggling: wait for window
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    is_spawned(qtile, 'dd-a')
-    assert_focused(qtile, 'dd-a')
-    assert qtile.c.group["SCRATCHPAD"].dropdown_info('dd-a')['window']['name'] == 'dd-a'
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    is_spawned(lavinder, 'dd-a')
+    assert_focused(lavinder, 'dd-a')
+    assert lavinder.c.group["SCRATCHPAD"].dropdown_info('dd-a')['window']['name'] == 'dd-a'
 
     # kill current window "dd-a"
-    qtile.c.window.kill()
-    is_killed(qtile, 'dd-a')
-    assert_focused(qtile, 'one')
-    assert 'window' not in qtile.c.group["SCRATCHPAD"].dropdown_info('dd-a')
+    lavinder.c.window.kill()
+    is_killed(lavinder, 'dd-a')
+    assert_focused(lavinder, 'one')
+    assert 'window' not in lavinder.c.group["SCRATCHPAD"].dropdown_info('dd-a')
 
 
 @scratchpad_config
-def test_floating_toggle(qtile):
+def test_floating_toggle(lavinder):
     # adjust command for current display
-    qtile.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % qtile.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
 
-    qtile.test_window("one")
-    assert_focused(qtile, 'one')
+    lavinder.test_window("one")
+    assert_focused(lavinder, 'one')
 
     # dd-a has no window associated yet
-    assert 'window' not in qtile.c.group["SCRATCHPAD"].dropdown_info('dd-a')
+    assert 'window' not in lavinder.c.group["SCRATCHPAD"].dropdown_info('dd-a')
     # First toggling: wait for window
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    is_spawned(qtile, 'dd-a')
-    assert_focused(qtile, 'dd-a')
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    is_spawned(lavinder, 'dd-a')
+    assert_focused(lavinder, 'dd-a')
 
-    assert 'window' in qtile.c.group["SCRATCHPAD"].dropdown_info('dd-a')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-a', 'one']
+    assert 'window' in lavinder.c.group["SCRATCHPAD"].dropdown_info('dd-a')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-a', 'one']
 
-    qtile.c.window.toggle_floating()
+    lavinder.c.window.toggle_floating()
     # dd-a has no window associated any more, but is still in group
-    assert 'window' not in qtile.c.group["SCRATCHPAD"].dropdown_info('dd-a')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-a', 'one']
+    assert 'window' not in lavinder.c.group["SCRATCHPAD"].dropdown_info('dd-a')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-a', 'one']
 
-    qtile.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
-    is_spawned(qtile, 'dd-a')
-    assert sorted(qtile.c.group["a"].info()['windows']) == ['dd-a', 'dd-a', 'one']
+    lavinder.c.group["SCRATCHPAD"].dropdown_toggle('dd-a')
+    is_spawned(lavinder, 'dd-a')
+    assert sorted(lavinder.c.group["a"].info()['windows']) == ['dd-a', 'dd-a', 'one']

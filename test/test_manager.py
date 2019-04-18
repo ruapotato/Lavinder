@@ -30,15 +30,15 @@ import pytest
 import subprocess
 import time
 
-import libqtile
-import libqtile.layout
-import libqtile.bar
-import libqtile.command
-import libqtile.widget
-import libqtile.core.manager
-import libqtile.config
-import libqtile.hook
-import libqtile.confreader
+import liblavinder
+import liblavinder.layout
+import liblavinder.bar
+import liblavinder.command
+import liblavinder.widget
+import liblavinder.core.manager
+import liblavinder.config
+import liblavinder.hook
+import liblavinder.confreader
 
 
 from .conftest import whereis, BareConfig, no_xinerama, Retry
@@ -47,36 +47,36 @@ from .conftest import whereis, BareConfig, no_xinerama, Retry
 class ManagerConfig:
     auto_fullscreen = True
     groups = [
-        libqtile.config.Group("a"),
-        libqtile.config.Group("b"),
-        libqtile.config.Group("c"),
-        libqtile.config.Group("d")
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("b"),
+        liblavinder.config.Group("c"),
+        liblavinder.config.Group("d")
     ]
     layouts = [
-        libqtile.layout.stack.Stack(num_stacks=1),
-        libqtile.layout.stack.Stack(num_stacks=2),
-        libqtile.layout.tile.Tile(ratio=0.5),
-        libqtile.layout.max.Max()
+        liblavinder.layout.stack.Stack(num_stacks=1),
+        liblavinder.layout.stack.Stack(num_stacks=2),
+        liblavinder.layout.tile.Tile(ratio=0.5),
+        liblavinder.layout.max.Max()
     ]
-    floating_layout = libqtile.layout.floating.Floating(
+    floating_layout = liblavinder.layout.floating.Floating(
         float_rules=[dict(wmclass="xclock")])
     keys = [
-        libqtile.config.Key(
+        liblavinder.config.Key(
             ["control"],
             "k",
-            libqtile.command._Call([("layout", None)], "up")
+            liblavinder.command._Call([("layout", None)], "up")
         ),
-        libqtile.config.Key(
+        liblavinder.config.Key(
             ["control"],
             "j",
-            libqtile.command._Call([("layout", None)], "down")
+            liblavinder.command._Call([("layout", None)], "down")
         ),
     ]
     mouse = []
-    screens = [libqtile.config.Screen(
-        bottom=libqtile.bar.Bar(
+    screens = [liblavinder.config.Screen(
+        bottom=liblavinder.bar.Bar(
             [
-                libqtile.widget.GroupBox(),
+                liblavinder.widget.GroupBox(),
             ],
             20
         ),
@@ -85,40 +85,40 @@ class ManagerConfig:
     follow_mouse_focus = True
 
 
-manager_config = pytest.mark.parametrize("qtile", [ManagerConfig], indirect=True)
+manager_config = pytest.mark.parametrize("lavinder", [ManagerConfig], indirect=True)
 
 
 @manager_config
-def test_screen_dim(qtile):
+def test_screen_dim(lavinder):
     # self.c.restart()
 
-    qtile.test_xclock()
-    assert qtile.c.screen.info()["index"] == 0
-    assert qtile.c.screen.info()["x"] == 0
-    assert qtile.c.screen.info()["width"] == 800
-    assert qtile.c.group.info()["name"] == 'a'
-    assert qtile.c.group.info()["focus"] == 'xclock'
+    lavinder.test_xclock()
+    assert lavinder.c.screen.info()["index"] == 0
+    assert lavinder.c.screen.info()["x"] == 0
+    assert lavinder.c.screen.info()["width"] == 800
+    assert lavinder.c.group.info()["name"] == 'a'
+    assert lavinder.c.group.info()["focus"] == 'xclock'
 
-    qtile.c.to_screen(1)
-    qtile.test_xeyes()
-    assert qtile.c.screen.info()["index"] == 1
-    assert qtile.c.screen.info()["x"] == 800
-    assert qtile.c.screen.info()["width"] == 640
-    assert qtile.c.group.info()["name"] == 'b'
-    assert qtile.c.group.info()["focus"] == 'xeyes'
+    lavinder.c.to_screen(1)
+    lavinder.test_xeyes()
+    assert lavinder.c.screen.info()["index"] == 1
+    assert lavinder.c.screen.info()["x"] == 800
+    assert lavinder.c.screen.info()["width"] == 640
+    assert lavinder.c.group.info()["name"] == 'b'
+    assert lavinder.c.group.info()["focus"] == 'xeyes'
 
-    qtile.c.to_screen(0)
-    assert qtile.c.screen.info()["index"] == 0
-    assert qtile.c.screen.info()["x"] == 0
-    assert qtile.c.screen.info()["width"] == 800
-    assert qtile.c.group.info()["name"] == 'a'
-    assert qtile.c.group.info()["focus"] == 'xclock'
+    lavinder.c.to_screen(0)
+    assert lavinder.c.screen.info()["index"] == 0
+    assert lavinder.c.screen.info()["x"] == 0
+    assert lavinder.c.screen.info()["width"] == 800
+    assert lavinder.c.group.info()["name"] == 'a'
+    assert lavinder.c.group.info()["focus"] == 'xclock'
 
 
 @pytest.mark.parametrize("xephyr", [{"xoffset": 0}], indirect=True)
 @manager_config
-def test_clone_dim(qtile):
-    self = qtile
+def test_clone_dim(lavinder):
+    self = lavinder
 
     self.test_xclock()
     assert self.c.screen.info()["index"] == 0
@@ -131,8 +131,8 @@ def test_clone_dim(qtile):
 
 
 @manager_config
-def test_to_screen(qtile):
-    self = qtile
+def test_to_screen(lavinder):
+    self = lavinder
 
     assert self.c.screen.info()["index"] == 0
     self.c.to_screen(1)
@@ -157,11 +157,11 @@ def test_to_screen(qtile):
 
 
 @manager_config
-def test_togroup(qtile):
-    self = qtile
+def test_togroup(lavinder):
+    self = lavinder
 
     self.test_window("one")
-    with pytest.raises(libqtile.command.CommandError):
+    with pytest.raises(liblavinder.command.CommandError):
         self.c.window.togroup("nonexistent")
     assert self.c.groups()["a"]["focus"] == "one"
     self.c.window.togroup("a")
@@ -175,8 +175,8 @@ def test_togroup(qtile):
 
 
 @manager_config
-def test_resize(qtile):
-    self = qtile
+def test_resize(lavinder):
+    self = lavinder
     self.c.screen[0].resize(x=10, y=10, w=100, h=100)
 
     @Retry(ignore_exceptions=(AssertionError), fail_msg="Screen didn't resize")
@@ -190,26 +190,26 @@ def test_resize(qtile):
 
 
 @no_xinerama
-def test_minimal(qtile):
-    assert qtile.c.status() == "OK"
+def test_minimal(lavinder):
+    assert lavinder.c.status() == "OK"
 
 
 @manager_config
 @no_xinerama
-def test_events(qtile):
-    assert qtile.c.status() == "OK"
+def test_events(lavinder):
+    assert lavinder.c.status() == "OK"
 
 
 # FIXME: failing test disabled. For some reason we don't seem
 # to have a keymap in Xnest or Xephyr 99% of the time.
 @manager_config
 @no_xinerama
-def test_keypress(qtile):
-    self = qtile
+def test_keypress(lavinder):
+    self = lavinder
 
     self.test_window("one")
     self.test_window("two")
-    with pytest.raises(libqtile.command.CommandError):
+    with pytest.raises(liblavinder.command.CommandError):
         self.c.simulate_keypress(["unknown"], "j")
     assert self.c.groups()["a"]["focus"] == "two"
     self.c.simulate_keypress(["control"], "j")
@@ -218,16 +218,16 @@ def test_keypress(qtile):
 
 @manager_config
 @no_xinerama
-def test_spawn(qtile):
+def test_spawn(lavinder):
     # Spawn something with a pid greater than init's
-    assert int(qtile.c.spawn("true")) > 1
+    assert int(lavinder.c.spawn("true")) > 1
 
 
 @manager_config
 @no_xinerama
-def test_spawn_list(qtile):
+def test_spawn_list(lavinder):
     # Spawn something with a pid greater than init's
-    assert int(qtile.c.spawn(["echo", "true"])) > 1
+    assert int(lavinder.c.spawn(["echo", "true"])) > 1
 
 
 @Retry(ignore_exceptions=(AssertionError,), fail_msg='Window did not die!')
@@ -239,18 +239,18 @@ def assert_window_died(client, window_info):
 
 @manager_config
 @no_xinerama
-def test_kill_window(qtile):
-    qtile.test_window("one")
-    qtile.testwindows = []
-    window_info = qtile.c.window.info()
-    qtile.c.window[window_info["id"]].kill()
-    assert_window_died(qtile.c, window_info)
+def test_kill_window(lavinder):
+    lavinder.test_window("one")
+    lavinder.testwindows = []
+    window_info = lavinder.c.window.info()
+    lavinder.c.window[window_info["id"]].kill()
+    assert_window_died(lavinder.c, window_info)
 
 
 @manager_config
 @no_xinerama
-def test_kill_other(qtile):
-    self = qtile
+def test_kill_other(lavinder):
+    self = lavinder
 
     self.c.group.setlayout("tile")
     one = self.test_window("one")
@@ -274,8 +274,8 @@ def test_kill_other(qtile):
 
 @manager_config
 @no_xinerama
-def test_regression_groupswitch(qtile):
-    self = qtile
+def test_regression_groupswitch(lavinder):
+    self = lavinder
 
     self.c.group["c"].toscreen()
     self.c.group["d"].toscreen()
@@ -284,8 +284,8 @@ def test_regression_groupswitch(qtile):
 
 @manager_config
 @no_xinerama
-def test_next_layout(qtile):
-    self = qtile
+def test_next_layout(lavinder):
+    self = lavinder
 
     self.test_window("one")
     self.test_window("two")
@@ -300,8 +300,8 @@ def test_next_layout(qtile):
 
 @manager_config
 @no_xinerama
-def test_setlayout(qtile):
-    self = qtile
+def test_setlayout(lavinder):
+    self = lavinder
 
     assert not self.c.layout.info()["name"] == "max"
     self.c.group.setlayout("max")
@@ -310,8 +310,8 @@ def test_setlayout(qtile):
 
 @manager_config
 @no_xinerama
-def test_adddelgroup(qtile):
-    self = qtile
+def test_adddelgroup(lavinder):
+    self = lavinder
 
     self.test_window("one")
     self.c.addgroup("dummygroup")
@@ -326,7 +326,7 @@ def test_adddelgroup(qtile):
 
     for i in list(self.c.groups().keys())[:-1]:
         self.c.delgroup(i)
-    with pytest.raises(libqtile.command.CommandException):
+    with pytest.raises(liblavinder.command.CommandException):
         self.c.delgroup(list(self.c.groups().keys())[0])
 
     # Assert that setting layout via cmd_addgroup works
@@ -336,20 +336,20 @@ def test_adddelgroup(qtile):
 
 @manager_config
 @no_xinerama
-def test_delgroup(qtile):
-    self = qtile
+def test_delgroup(lavinder):
+    self = lavinder
 
     self.test_window("one")
     for i in ['a', 'd', 'c']:
         self.c.delgroup(i)
-    with pytest.raises(libqtile.command.CommandException):
+    with pytest.raises(liblavinder.command.CommandException):
         self.c.delgroup('b')
 
 
 @manager_config
 @no_xinerama
-def test_nextprevgroup(qtile):
-    self = qtile
+def test_nextprevgroup(lavinder):
+    self = lavinder
 
     start = self.c.group.info()["name"]
     ret = self.c.screen.next_group()
@@ -361,8 +361,8 @@ def test_nextprevgroup(qtile):
 
 @manager_config
 @no_xinerama
-def test_toggle_group(qtile):
-    self = qtile
+def test_toggle_group(lavinder):
+    self = lavinder
 
     self.c.group["a"].toscreen()
     self.c.group["b"].toscreen()
@@ -376,8 +376,8 @@ def test_toggle_group(qtile):
 
 @manager_config
 @no_xinerama
-def test_inspect_xeyes(qtile):
-    self = qtile
+def test_inspect_xeyes(lavinder):
+    self = lavinder
 
     self.test_xeyes()
     assert self.c.window.inspect()
@@ -385,8 +385,8 @@ def test_inspect_xeyes(qtile):
 
 @manager_config
 @no_xinerama
-def test_inspect_xclock(qtile):
-    self = qtile
+def test_inspect_xclock(lavinder):
+    self = lavinder
 
     self.test_xclock()
     assert self.c.window.inspect()["wm_class"]
@@ -394,8 +394,8 @@ def test_inspect_xclock(qtile):
 
 @manager_config
 @no_xinerama
-def test_static(qtile):
-    self = qtile
+def test_static(lavinder):
+    self = lavinder
 
     self.test_xeyes()
     self.test_window("one")
@@ -404,8 +404,8 @@ def test_static(qtile):
 
 @manager_config
 @no_xinerama
-def test_match(qtile):
-    self = qtile
+def test_match(lavinder):
+    self = lavinder
 
     self.test_xeyes()
     assert self.c.window.match(wname="xeyes")
@@ -414,8 +414,8 @@ def test_match(qtile):
 
 @manager_config
 @no_xinerama
-def test_default_float(qtile):
-    self = qtile
+def test_default_float(lavinder):
+    self = lavinder
 
     # change to 2 col stack
     self.c.next_layout()
@@ -446,11 +446,11 @@ def test_default_float(qtile):
 
 @manager_config
 @no_xinerama
-def test_last_float_size(qtile):
+def test_last_float_size(lavinder):
     """
     When you re-float something it would be preferable to have it use the previous float size
     """
-    self = qtile
+    self = lavinder
 
     self.test_xeyes()
     assert self.c.window.info()['name'] == 'xeyes'
@@ -484,8 +484,8 @@ def test_last_float_size(qtile):
 
 @manager_config
 @no_xinerama
-def test_float_max_min_combo(qtile):
-    self = qtile
+def test_float_max_min_combo(lavinder):
+    self = lavinder
 
     # change to 2 col stack
     self.c.next_layout()
@@ -530,8 +530,8 @@ def test_float_max_min_combo(qtile):
 
 @manager_config
 @no_xinerama
-def test_toggle_fullscreen(qtile):
-    self = qtile
+def test_toggle_fullscreen(lavinder):
+    self = lavinder
 
     # change to 2 col stack
     self.c.next_layout()
@@ -568,8 +568,8 @@ def test_toggle_fullscreen(qtile):
 
 @manager_config
 @no_xinerama
-def test_toggle_max(qtile):
-    self = qtile
+def test_toggle_max(lavinder):
+    self = lavinder
 
     # change to 2 col stack
     self.c.next_layout()
@@ -604,8 +604,8 @@ def test_toggle_max(qtile):
 
 @manager_config
 @no_xinerama
-def test_toggle_min(qtile):
-    self = qtile
+def test_toggle_min(lavinder):
+    self = lavinder
 
     # change to 2 col stack
     self.c.next_layout()
@@ -642,8 +642,8 @@ def test_toggle_min(qtile):
 
 @manager_config
 @no_xinerama
-def test_toggle_floating(qtile):
-    self = qtile
+def test_toggle_floating(lavinder):
+    self = lavinder
 
     self.test_xeyes()
     assert self.c.window.info()['floating'] is False
@@ -661,8 +661,8 @@ def test_toggle_floating(qtile):
 
 @manager_config
 @no_xinerama
-def test_floating_focus(qtile):
-    self = qtile
+def test_floating_focus(lavinder):
+    self = lavinder
 
     # change to 2 col stack
     self.c.next_layout()
@@ -712,8 +712,8 @@ def test_floating_focus(qtile):
 
 @manager_config
 @no_xinerama
-def test_move_floating(qtile):
-    self = qtile
+def test_move_floating(lavinder):
+    self = lavinder
 
     self.test_xeyes()
     # self.test_window("one")
@@ -759,16 +759,16 @@ def test_move_floating(qtile):
 
 @manager_config
 @no_xinerama
-def test_screens(qtile):
-    self = qtile
+def test_screens(lavinder):
+    self = lavinder
 
     assert len(self.c.screens())
 
 
 @manager_config
 @no_xinerama
-def test_rotate(qtile):
-    self = qtile
+def test_rotate(lavinder):
+    self = lavinder
 
     self.test_window("one")
     s = self.c.screens()[0]
@@ -796,8 +796,8 @@ def test_rotate(qtile):
 # TODO: see note on test_resize
 @manager_config
 @no_xinerama
-def test_resize_(qtile):
-    self = qtile
+def test_resize_(lavinder):
+    self = lavinder
 
     self.test_window("one")
     subprocess.call(
@@ -819,39 +819,39 @@ def test_resize_(qtile):
 
 @manager_config
 @no_xinerama
-def test_focus_stays_on_layout_switch(qtile):
-    qtile.test_window("one")
-    qtile.test_window("two")
+def test_focus_stays_on_layout_switch(lavinder):
+    lavinder.test_window("one")
+    lavinder.test_window("two")
 
     # switch to a double stack layout
-    qtile.c.next_layout()
+    lavinder.c.next_layout()
 
     # focus on a different window than the default
-    qtile.c.layout.next()
+    lavinder.c.layout.next()
 
     # toggle the layout
-    qtile.c.next_layout()
-    qtile.c.prev_layout()
+    lavinder.c.next_layout()
+    lavinder.c.prev_layout()
 
-    assert qtile.c.window.info()['name'] == 'one'
+    assert lavinder.c.window.info()['name'] == 'one'
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_xeyes(qtile):
-    qtile.test_xeyes()
+def test_xeyes(lavinder):
+    lavinder.test_xeyes()
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_xcalc(qtile):
-    qtile.test_xcalc()
+def test_xcalc(lavinder):
+    lavinder.test_xcalc()
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_xcalc_kill_window(qtile):
-    self = qtile
+def test_xcalc_kill_window(lavinder):
+    self = lavinder
 
     self.test_xcalc()
     window_info = self.c.window.info()
@@ -859,10 +859,10 @@ def test_xcalc_kill_window(qtile):
     assert_window_died(self.c, window_info)
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_map_request(qtile):
-    self = qtile
+def test_map_request(lavinder):
+    self = lavinder
 
     self.test_window("one")
     info = self.c.groups()["a"]
@@ -875,10 +875,10 @@ def test_map_request(qtile):
     assert info["focus"] == "two"
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_unmap(qtile):
-    self = qtile
+def test_unmap(lavinder):
+    self = lavinder
 
     one = self.test_window("one")
     two = self.test_window("two")
@@ -904,10 +904,10 @@ def test_unmap(qtile):
     assert info["focus"] is None
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_setgroup(qtile):
-    self = qtile
+def test_setgroup(lavinder):
+    self = lavinder
 
     self.test_window("one")
     self.c.group["b"].toscreen()
@@ -922,10 +922,10 @@ def test_setgroup(qtile):
     assert self.c.groups()["c"]["screen"] == 0
 
 
-@pytest.mark.parametrize("qtile", [BareConfig, ManagerConfig], indirect=True)
+@pytest.mark.parametrize("lavinder", [BareConfig, ManagerConfig], indirect=True)
 @pytest.mark.parametrize("xephyr", [{"xinerama": True}, {"xinerama": False}], indirect=True)
-def test_unmap_noscreen(qtile):
-    self = qtile
+def test_unmap_noscreen(lavinder):
+    self = lavinder
     self.test_window("one")
     pid = self.test_window("two")
     assert len(self.c.windows()) == 2
@@ -939,74 +939,74 @@ def test_unmap_noscreen(qtile):
 
 
 # def test_init():
-#     with pytest.raises(libqtile.core.manager.QtileError):
-#         libqtile.config.Key([], "unknown", libqtile.command._Call("base", None, "foo"))
-#     with pytest.raises(libqtile.core.manager.QtileError):
-#         libqtile.config.Key(["unknown"], "x", libqtile.command._Call("base", None, "foo"))
+#     with pytest.raises(liblavinder.core.manager.LavinderError):
+#         liblavinder.config.Key([], "unknown", liblavinder.command._Call("base", None, "foo"))
+#     with pytest.raises(liblavinder.core.manager.LavinderError):
+#         liblavinder.config.Key(["unknown"], "x", liblavinder.command._Call("base", None, "foo"))
 
 
-class TScreen(libqtile.config.Screen):
+class TScreen(liblavinder.config.Screen):
     def set_group(self, x, save_prev=True):
         pass
 
 
 def test_dx():
-    s = TScreen(left=libqtile.bar.Gap(10))
+    s = TScreen(left=liblavinder.bar.Gap(10))
     s._configure(None, 0, 0, 0, 100, 100, None)
     assert s.dx == 10
 
 
 def test_dwidth():
-    s = TScreen(left=libqtile.bar.Gap(10))
+    s = TScreen(left=liblavinder.bar.Gap(10))
     s._configure(None, 0, 0, 0, 100, 100, None)
     assert s.dwidth == 90
-    s.right = libqtile.bar.Gap(10)
+    s.right = liblavinder.bar.Gap(10)
     assert s.dwidth == 80
 
 
 def test_dy():
-    s = TScreen(top=libqtile.bar.Gap(10))
+    s = TScreen(top=liblavinder.bar.Gap(10))
     s._configure(None, 0, 0, 0, 100, 100, None)
     assert s.dy == 10
 
 
 def test_dheight():
-    s = TScreen(top=libqtile.bar.Gap(10))
+    s = TScreen(top=liblavinder.bar.Gap(10))
     s._configure(None, 0, 0, 0, 100, 100, None)
     assert s.dheight == 90
-    s.bottom = libqtile.bar.Gap(10)
+    s.bottom = liblavinder.bar.Gap(10)
     assert s.dheight == 80
 
 
 class _Config:
     groups = [
-        libqtile.config.Group("a"),
-        libqtile.config.Group("b"),
-        libqtile.config.Group("c"),
-        libqtile.config.Group("d")
+        liblavinder.config.Group("a"),
+        liblavinder.config.Group("b"),
+        liblavinder.config.Group("c"),
+        liblavinder.config.Group("d")
     ]
     layouts = [
-        libqtile.layout.stack.Stack(num_stacks=1),
-        libqtile.layout.stack.Stack(num_stacks=2)
+        liblavinder.layout.stack.Stack(num_stacks=1),
+        liblavinder.layout.stack.Stack(num_stacks=2)
     ]
-    floating_layout = libqtile.layout.floating.Floating()
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = [
-        libqtile.config.Key(
+        liblavinder.config.Key(
             ["control"],
             "k",
-            libqtile.command._Call([("layout", None)], "up")
+            liblavinder.command._Call([("layout", None)], "up")
         ),
-        libqtile.config.Key(
+        liblavinder.config.Key(
             ["control"],
             "j",
-            libqtile.command._Call([("layout", None)], "down")
+            liblavinder.command._Call([("layout", None)], "down")
         ),
     ]
     mouse = []
-    screens = [libqtile.config.Screen(
-        bottom=libqtile.bar.Bar(
+    screens = [liblavinder.config.Screen(
+        bottom=liblavinder.bar.Bar(
             [
-                libqtile.widget.GroupBox(),
+                liblavinder.widget.GroupBox(),
             ],
             20
         ),
@@ -1019,15 +1019,15 @@ class ClientNewStaticConfig(_Config):
     def main(c):
         def client_new(c):
             c.static(0)
-        libqtile.hook.subscribe.client_new(client_new)
+        liblavinder.hook.subscribe.client_new(client_new)
 
 
-clientnew_config = pytest.mark.parametrize("qtile", [ClientNewStaticConfig], indirect=True)
+clientnew_config = pytest.mark.parametrize("lavinder", [ClientNewStaticConfig], indirect=True)
 
 
 @clientnew_config
-def test_clientnew_config(qtile):
-    self = qtile
+def test_clientnew_config(lavinder):
+    self = lavinder
 
     a = self.test_window("one")
     self.kill_window(a)
@@ -1035,8 +1035,8 @@ def test_clientnew_config(qtile):
 
 @pytest.mark.skipif(whereis("gkrellm") is None, reason="gkrellm not found")
 @clientnew_config
-def test_gkrellm(qtile):
-    qtile.test_gkrellm()
+def test_gkrellm(lavinder):
+    lavinder.test_gkrellm()
     time.sleep(0.1)
 
 
@@ -1045,43 +1045,43 @@ class ToGroupConfig(_Config):
     def main(c):
         def client_new(c):
             c.togroup("d")
-        libqtile.hook.subscribe.client_new(client_new)
+        liblavinder.hook.subscribe.client_new(client_new)
 
 
-togroup_config = pytest.mark.parametrize("qtile", [ToGroupConfig], indirect=True)
+togroup_config = pytest.mark.parametrize("lavinder", [ToGroupConfig], indirect=True)
 
 
 @togroup_config
-def test_togroup_config(qtile):
-    qtile.c.group["d"].toscreen()
-    qtile.c.group["a"].toscreen()
-    a = qtile.test_window("one")
-    assert len(qtile.c.group["d"].info()["windows"]) == 1
-    qtile.kill_window(a)
+def test_togroup_config(lavinder):
+    lavinder.c.group["d"].toscreen()
+    lavinder.c.group["a"].toscreen()
+    a = lavinder.test_window("one")
+    assert len(lavinder.c.group["d"].info()["windows"]) == 1
+    lavinder.kill_window(a)
 
 
 @manager_config
-def test_color_pixel(qtile):
+def test_color_pixel(lavinder):
     # test for #394
-    qtile.c.eval("self.color_pixel(\"ffffff\")")
+    lavinder.c.eval("self.color_pixel(\"ffffff\")")
 
 
 @manager_config
-def test_change_loglevel(qtile):
-    assert qtile.c.loglevel() == logging.INFO
-    assert qtile.c.loglevelname() == 'INFO'
-    qtile.c.debug()
-    assert qtile.c.loglevel() == logging.DEBUG
-    assert qtile.c.loglevelname() == 'DEBUG'
-    qtile.c.info()
-    assert qtile.c.loglevel() == logging.INFO
-    assert qtile.c.loglevelname() == 'INFO'
-    qtile.c.warning()
-    assert qtile.c.loglevel() == logging.WARNING
-    assert qtile.c.loglevelname() == 'WARNING'
-    qtile.c.error()
-    assert qtile.c.loglevel() == logging.ERROR
-    assert qtile.c.loglevelname() == 'ERROR'
-    qtile.c.critical()
-    assert qtile.c.loglevel() == logging.CRITICAL
-    assert qtile.c.loglevelname() == 'CRITICAL'
+def test_change_loglevel(lavinder):
+    assert lavinder.c.loglevel() == logging.INFO
+    assert lavinder.c.loglevelname() == 'INFO'
+    lavinder.c.debug()
+    assert lavinder.c.loglevel() == logging.DEBUG
+    assert lavinder.c.loglevelname() == 'DEBUG'
+    lavinder.c.info()
+    assert lavinder.c.loglevel() == logging.INFO
+    assert lavinder.c.loglevelname() == 'INFO'
+    lavinder.c.warning()
+    assert lavinder.c.loglevel() == logging.WARNING
+    assert lavinder.c.loglevelname() == 'WARNING'
+    lavinder.c.error()
+    assert lavinder.c.loglevel() == logging.ERROR
+    assert lavinder.c.loglevelname() == 'ERROR'
+    lavinder.c.critical()
+    assert lavinder.c.loglevel() == logging.CRITICAL
+    assert lavinder.c.loglevelname() == 'CRITICAL'

@@ -1,7 +1,7 @@
 import pytest
-from libqtile.widget import Battery, BatteryIcon, battery
-from libqtile.widget.battery import BatteryState, BatteryStatus
-from libqtile import images
+from liblavinder.widget import Battery, BatteryIcon, battery
+from liblavinder.widget.battery import BatteryState, BatteryStatus
+from liblavinder import images
 import cairocffi
 from .conftest import TEST_DIR
 
