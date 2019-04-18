@@ -3,31 +3,9 @@ Frequently Asked Questions
 ==========================
 
 Why the name Lavinder?
-===================
+======================
 
-Users often wonder, why the Q? Does it have something to do with Qt? No. Below
-is an IRC excerpt where cortesi explains the great trial that ultimately
-brought Lavinder into existence, thanks to the benevolence of the Open Source
-Gods. Praise be to the OSG!
-
-::
-
-    ramnes:  what does Lavinder mean?
-    ramnes:  what's the Q?
-    @tych0:  ramnes: it doesn't :)
-    @tych0:  cortesi was just looking for the first letter that wasn't registered
-             in a domain name with "tile" as a suffix
-    @tych0:  lavinder it was :)
-    cortesi: tych0, dx: we really should have something more compelling to
-             explain the name. one day i was swimming at manly beach in sydney,
-             where i lived at the time. suddenly, i saw an enormous great white
-             right beside me. it went for my leg with massive, gaping jaws, but
-             quick as a flash, i thumb-punched it in both eyes. when it reared
-             back in agony, i saw that it had a jagged, gnarly scar on its
-             stomach... a scar shaped like the letter "Q".
-    cortesi: while it was distracted, i surfed a wave to shore. i knew that i
-             had to dedicate my next open source project to the ocean gods, in
-             thanks for my lucky escape. and thus, lavinder got its name...
+Because
 
 When I first start xterm/urxvt/rxvt containing an instance of Vim, I see text and layout corruption. What gives?
 ================================================================================================================
@@ -74,5 +52,3 @@ LibreOffice menus don't appear or don't stay visible
 
 A workaround for problem with the mouse in libreoffice is setting the environment variable »SAL_USE_VCLPLUGIN=gen«.
 It is dependet on your system configuration where to do this. e.g. ArchLinux with libreoffice-fresh in /etc/profile.d/libreoffice-fresh.sh.
-
-

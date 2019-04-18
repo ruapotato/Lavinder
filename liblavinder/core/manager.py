@@ -80,7 +80,7 @@ class Lavinder(command.CommandObject):
 
         self._eventloop = None
         self._finalize = False
-        self.mouse_position = (0,0)
+        self.mouse_position = (0, 0)
 
         if not display_name:
             display_name = os.environ.get("DISPLAY")
@@ -1280,7 +1280,7 @@ class Lavinder(command.CommandObject):
         return self.cmd_groups()
 
     def get_mouse_position(self):
-      return self.mouse_position
+        return self.mouse_position
 
     def cmd_display_kb(self, *args):
         """Display table of key bindings"""
@@ -1704,7 +1704,7 @@ class Lavinder(command.CommandObject):
             logger.error("No widget named '{0:s}' present.".format(widget))
 
     def cmd_lavindercmd(self, prompt="command",
-                     widget="prompt", messenger="xmessage"):
+                        widget="prompt", messenger="xmessage"):
         """ Execute a Lavinder command using the client syntax
 
         Tab completion aids navigation of the command tree

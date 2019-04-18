@@ -4,30 +4,20 @@ language: python
 
 matrix:
     include:
-        - python: 3.5
-          env: TOXENV=py35
         - python: 3.6
           env: TOXENV=py36
         - python: 3.7
           env: TOXENV=py37
         - python: pypy3.5-6.0
           env: TOXENV=pypy3
-        - python: nightly
-          env: TOXENV=py-nightly
         - python: 3.7
           env: TOXENV=packaging
         - python: 3.7
           env: TOXENV=docs
-        - python: 3.5
-          env: TOXENV=pep8
         - python: 3.7
           env: TOXENV=pep8
         - python: 3.7
           env: TOXENV=mypy
-
-    allow_failures:
-        - python: nightly
-          env: TOXENV=py-nightly
 
 cache:
   directories:

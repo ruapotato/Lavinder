@@ -163,7 +163,7 @@ See :doc:`Hacking Lavinder </manual/hacking>` for more information on using
 Xephyr.
 
 Starting Lavinder
-==============
+=================
 
 There are several ways to start Lavinder. The most common way is via an entry in
 your X session manager's menu. The default Lavinder behavior can be invoked by

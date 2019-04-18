@@ -261,7 +261,7 @@ def test_remove(lavinder):
     lavinder.c.group.focus_by_name("six")
     assert_focused(lavinder, "six")
     assert lavinder.c.group.info()['focus_history'] == ["four", "five", "one",
-                                                     "seven", "six"]
+                                                        "seven", "six"]
 
     lavinder.kill_window(five)
     lavinder.kill_window(one)
@@ -308,12 +308,12 @@ def test_remove_floating(lavinder):
     lavinder.c.group.focus_by_name("three")
     lavinder.c.group.focus_by_name("float3")
     assert lavinder.c.group.info()['focus_history'] == ["two", "one", "float4",
-                                                     "float5", "three", "float3"]
+                                                        "float5", "three", "float3"]
 
     lavinder.kill_window(one)
     assert_focused(lavinder, "float3")
     assert lavinder.c.group.info()['focus_history'] == ["two", "float4",
-                                                     "float5", "three", "float3"]
+                                                        "float5", "three", "float3"]
 
     lavinder.kill_window(float5)
     assert_focused(lavinder, "float3")
@@ -331,7 +331,7 @@ def test_remove_floating(lavinder):
     five = lavinder.test_window("five")
     lavinder.c.group.focus_by_name("float3")
     assert lavinder.c.group.info()['focus_history'] == ["two", "three", "four",
-                                                     "float6", "five", "float3"]
+                                                        "float6", "five", "float3"]
 
     # Killing several unfocused windows before the current one, and then
     # killing the current window, must focus the remaining most recently
@@ -386,7 +386,7 @@ def test_desktop_notifications(lavinder):
     lavinder.kill_window(notif4)
     notif8 = lavinder.test_notification("notif8")
     assert lavinder.c.group.info()['focus_history'] == ["dialog1", "dialog2",
-                                                     "three", "two"]
+                                                        "three", "two"]
 
     lavinder.test_dialog("dialog3")
     lavinder.kill_window(dialog1)

@@ -212,10 +212,10 @@ class Columns(Layout):
             return
         if client.has_focus:
             color = self.group.lavinder.color_pixel(self.border_focus if col.split
-                                                 else self.border_focus_stack)
+                                                    else self.border_focus_stack)
         else:
             color = self.group.lavinder.color_pixel(self.border_normal if col.split
-                                                 else self.border_normal_stack)
+                                                    else self.border_normal_stack)
         if len(self.columns) == 1 and (len(col) == 1 or not col.split):
             border = 0
         else:

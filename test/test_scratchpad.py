@@ -73,7 +73,8 @@ def is_killed(lavinder, name):
 @scratchpad_config
 def test_toggling(lavinder):
     # adjust command for current display
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a',
+                                                        command='xterm -T dd-a -display %s sh' % lavinder.display)
 
     lavinder.test_window("one")
     assert lavinder.c.group["a"].info()['windows'] == ['one']
@@ -102,8 +103,10 @@ def test_toggling(lavinder):
 @scratchpad_config
 def test_focus_cycle(lavinder):
     # adjust command for current display
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-b', command='xterm -T dd-b -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a',
+                                                        command='xterm -T dd-a -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-b',
+                                                        command='xterm -T dd-b -display %s sh' % lavinder.display)
 
     lavinder.test_window("one")
     # spawn dd-a by toggling
@@ -130,8 +133,10 @@ def test_focus_cycle(lavinder):
 @scratchpad_config
 def test_focus_lost_hide(lavinder):
     # adjust command for current display
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-c', command='xterm -T dd-c -display %s sh' % lavinder.display)
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-d', command='xterm -T dd-d -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-c',
+                                                        command='xterm -T dd-c -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-d',
+                                                        command='xterm -T dd-d -display %s sh' % lavinder.display)
 
     lavinder.test_window("one")
     assert_focused(lavinder, 'one')
@@ -183,8 +188,8 @@ def test_focus_lost_hide(lavinder):
 @scratchpad_config
 def test_kill(lavinder):
     # adjust command for current display
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
-
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a',
+                                                        command='xterm -T dd-a -display %s sh' % lavinder.display)
     lavinder.test_window("one")
     assert_focused(lavinder, 'one')
 
@@ -207,7 +212,8 @@ def test_kill(lavinder):
 @scratchpad_config
 def test_floating_toggle(lavinder):
     # adjust command for current display
-    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a', command='xterm -T dd-a -display %s sh' % lavinder.display)
+    lavinder.c.group["SCRATCHPAD"].dropdown_reconfigure('dd-a',
+                                                        command='xterm -T dd-a -display %s sh' % lavinder.display)
 
     lavinder.test_window("one")
     assert_focused(lavinder, 'one')

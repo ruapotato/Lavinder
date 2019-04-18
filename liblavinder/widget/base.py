@@ -254,7 +254,7 @@ class _Widget(command.CommandObject, configurable.Configurable):
             This method calls either ``.call_later`` with given arguments.
         """
         return self.lavinder.call_later(seconds, self._wrapper, method,
-                                     *method_args)
+                                        *method_args)
 
     def call_process(self, command, **kwargs):
         """

@@ -1,5 +1,5 @@
 lavinder-cmd
-=========
+============
 
 This is a simple tool to expose lavinder.command functionality to shell.
 This can be used standalone or in other shell scripts.
@@ -8,7 +8,7 @@ Examples:
 ---------
 
 Output of ``lavinder-cmd -h``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: text
 
@@ -37,7 +37,7 @@ Output of ``lavinder-cmd -h``
      lavinder-cmd -o group 3 -f focus_back
 
 Output of ``lavinder-cmd -o group 3``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: text
 
@@ -59,7 +59,7 @@ Output of ``lavinder-cmd -o group 3``
     -o group 3 -f unminimize_all      Unminimise all windows in this group
 
 Output of ``lavinder-cmd -o cmd``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: text
 

@@ -58,7 +58,7 @@ class GBConfig:
                     liblavinder.widget.MemoryGraph(type="line"),
                     liblavinder.widget.SwapGraph(type="box"),
                     liblavinder.widget.TextBox(name="text",
-                                            background="333333"),
+                                               background="333333"),
                 ],
                 50,
             ),

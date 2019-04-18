@@ -1,6 +1,6 @@
-================
+===================
 Installing Lavinder
-================
+===================
 
 Distro Guides
 =============
@@ -105,7 +105,7 @@ install python-gobject and python-dbus. Lavinder will run fine without these,
 although it will emit a warning that some things won't work.
 
 Lavinder
------
+--------
 
 With the dependencies in place, you can now install lavinder:
 
