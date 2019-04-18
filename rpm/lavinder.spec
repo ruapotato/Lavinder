@@ -62,7 +62,7 @@ install -m 644 %{SOURCE1} %{buildroot}%{_datadir}/xsessions/
 
 %files
 %license LICENSE
-%doc README.rst
+%doc README.md
 %{_mandir}/man1/qshell.1*
 %{_mandir}/man1/lavinder.1*
 %{_bindir}/qshell
