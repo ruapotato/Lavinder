@@ -85,7 +85,7 @@ def get_stats(scr, client, group_by='lineno', limit=10, seconds=1.5,
     (max_y, max_x) = scr.getmaxyx()
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     while True:
-        scr.addstr(0, 0, "Qtile - Top {} lines".format(limit))
+        scr.addstr(0, 0, "Lavinder - Top {} lines".format(limit))
         scr.addstr(1, 0, '{0:<3s} {1:<40s} {2:<30s} {3:<16s}'.format('#', 'Line', 'Memory', ' ' * (max_x - 71)),
                    curses.A_BOLD | curses.A_REVERSE)
 
@@ -130,7 +130,7 @@ def raw_stats(client, group_by='lineno', limit=10, force_start=False):
     snapshot = filter_snapshot(snapshot)
     top_stats = snapshot.statistics(group_by)
 
-    print("Qtile - Top {} lines".format(limit))
+    print("Lavinder - Top {} lines".format(limit))
     for index, stat in enumerate(top_stats[:limit], 1):
         frame = stat.traceback[0]
         # replace "/path/to/module/file.py" with "module/file.py"

@@ -133,7 +133,7 @@ Third-party bars
 
 There might be some reasons to use third-party bars. For instance you can come
 from another window manager and you have already configured dzen2, xmobar, or
-something else. They definitely can be used with Qtile too. In fact, any
+something else. They definitely can be used with Lavinder too. In fact, any
 additional configurations aren't needed. Just run the bar and lavinder will adapt.
 
 Reference

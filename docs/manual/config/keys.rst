@@ -2,7 +2,7 @@
 Keys
 ====
 
-The ``keys`` variable defines Qtile's key bindings. Individual key bindings are
+The ``keys`` variable defines Lavinder's key bindings. Individual key bindings are
 defined with :class:`liblavinder.config.Key` as demonstrated in the following
 example. Note that you may specify more than one callback functions.
 

@@ -126,7 +126,7 @@ class EzConfig:
             if key in self.modifier_keys:
                 if keys:
                     msg = 'Modifiers must always come before key/btn: %s'
-                    raise utils.QtileError(msg % spec)
+                    raise utils.LavinderError(msg % spec)
                 mods.append(self.modifier_keys[key])
                 continue
             if len(key) == 1:
@@ -138,11 +138,11 @@ class EzConfig:
 
         if not keys:
             msg = 'Invalid key/btn specifier: %s'
-            raise utils.QtileError(msg % spec)
+            raise utils.LavinderError(msg % spec)
 
         if len(keys) > 1:
             msg = 'Key chains are not supported: %s' % spec
-            raise utils.QtileError(msg)
+            raise utils.LavinderError(msg)
 
         return mods, keys[0]
 
@@ -549,7 +549,7 @@ class Match:
         except ValueError:
             error = 'Invalid rule for net_wm_pid: "%s" '\
                     'only ints allowed' % str(net_wm_pid)
-            raise utils.QtileError(error)
+            raise utils.LavinderError(error)
 
         self._rules = [('title', t) for t in title]
         self._rules += [('wm_class', w) for w in wm_class]

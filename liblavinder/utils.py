@@ -27,7 +27,7 @@ import importlib
 from .log_utils import logger
 
 
-class QtileError(Exception):
+class LavinderError(Exception):
     pass
 
 

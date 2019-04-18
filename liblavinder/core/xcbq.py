@@ -176,7 +176,7 @@ PropertyMap = {
     "_XEMBED_INFO": ("_XEMBED_INFO", 32),
     # ICCCM
     "WM_STATE": ("WM_STATE", 32),
-    # Qtile-specific properties
+    # Lavinder-specific properties
     "QTILE_INTERNAL": ("CARDINAL", 32)
 }
 for _name in net_wm_states:

@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Qtile
-Comment=Qtile Session
+Name=Lavinder
+Comment=Lavinder Session
 Exec=lavinder
 Type=Application
 Keywords=wm;tiling

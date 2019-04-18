@@ -27,7 +27,7 @@ from . import window
 class Gap(command.CommandObject):
     """A gap placed along one of the edges of the screen
 
-    If a gap has been defined, Qtile will avoid covering it with windows. The
+    If a gap has been defined, Lavinder will avoid covering it with windows. The
     most probable reason for configuring a gap is to make space for a
     third-party bar or other static window.
 

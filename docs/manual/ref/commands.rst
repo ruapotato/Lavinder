@@ -10,7 +10,7 @@ those given here.
 
 .. _lavinder_commands:
 
-.. lavinder_class:: liblavinder.core.manager.Qtile
+.. lavinder_class:: liblavinder.core.manager.Lavinder
 
 .. lavinder_class:: liblavinder.bar.Bar
    :noindex:

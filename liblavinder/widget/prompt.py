@@ -681,7 +681,7 @@ class Prompt(base._TextBox):
         prompt :
             Text displayed at the prompt.
         object_name :
-            Name of a object in Qtile. This string has to be 'layout', 'widget',
+            Name of a object in Lavinder. This string has to be 'layout', 'widget',
             'bar', 'window' or 'screen'.
         cmd_name :
             Execution command of selected object using object_name and selector.

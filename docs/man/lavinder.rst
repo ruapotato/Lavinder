@@ -9,7 +9,7 @@ lavinder [-c config] [-s lavindersocket] [-l DEBUG] [-n]
 DESCRIPTION
 ===========
 
-``lavinder`` runs Qtile on the current $DISPLAY. Qtile is a tiling window manager
+``lavinder`` runs Lavinder on the current $DISPLAY. Lavinder is a tiling window manager
 written in python. Complete configuration information is available online at
 http://docs.lavinder.org.
 
@@ -31,7 +31,7 @@ OPTIONS
 FILES
 =====
 
-Qtile searches for configuration files in the following locations:
+Lavinder searches for configuration files in the following locations:
 
     #. The location specified by the ``-c`` option.
     #. ``$XDG_CONFIG_HOME/lavinder/config.py``

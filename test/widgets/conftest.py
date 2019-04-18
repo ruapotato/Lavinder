@@ -4,7 +4,7 @@ import os
 
 @pytest.fixture(scope='function')
 def fake_bar():
-    from libqtile.bar import Bar
+    from liblavinder.bar import Bar
     height = 24
     b = Bar([], height)
     b.height = height

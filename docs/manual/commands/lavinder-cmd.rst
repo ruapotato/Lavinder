@@ -91,19 +91,19 @@ Output of ``lavinder-cmd -o cmd``
     -o cmd -f pause                   Drops into pdb
     -o cmd -f prev_layout           * Switch to the previous layout.
     -o cmd -f prev_screen             Move to the previous screen
-    -o cmd -f lavinder_info              Returns a dictionary of info on the Qtile instance
-    -o cmd -f lavindercmd              * Execute a Qtile command using the client syntax
+    -o cmd -f lavinder_info              Returns a dictionary of info on the Lavinder instance
+    -o cmd -f lavindercmd              * Execute a Lavinder command using the client syntax
     -o cmd -f remove_rule           * Remove a dgroup rule by rule_id
     -o cmd -f restart                 Restart lavinder
     -o cmd -f run_extension         * Run extensions
     -o cmd -f run_extention         * Deprecated alias for cmd_run_extension()
     -o cmd -f run_external          * Run external Python script
     -o cmd -f screens                 Return a list of dictionaries providing information on all screens
-    -o cmd -f shutdown                Quit Qtile
+    -o cmd -f shutdown                Quit Lavinder
     -o cmd -f simulate_keypress     * Simulates a keypress on the focused window.
     -o cmd -f spawn                 * Run cmd in a shell.
     -o cmd -f spawncmd              * Spawn a command using a prompt widget, with tab-completion.
-    -o cmd -f status                  Return "OK" if Qtile is running
+    -o cmd -f status                  Return "OK" if Lavinder is running
     -o cmd -f switch_groups         * Switch position of groupa to groupb
     -o cmd -f switchgroup           * Launch prompt widget to switch to a given group to the current screen
     -o cmd -f sync                    Sync the X display. Should only be used for development

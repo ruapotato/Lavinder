@@ -33,11 +33,11 @@
 from .log_utils import logger
 from . import utils
 
-from typing import Dict, Set
+from typing import Dict, Set  # noqa: F401
 
 
-subscriptions: Dict = {}
-SKIPLOG: Set = set()
+subscriptions = {}  # type: Dict
+SKIPLOG = set()  # type: Set
 lavinder = None
 
 
@@ -65,7 +65,7 @@ class Subscribe:
         return func
 
     def startup_once(self, func):
-        """Called when Qtile has started on first start
+        """Called when Lavinder has started on first start
 
         This hook is called exactly once per session (i.e. not on each
         ``lazy.restart()``).
@@ -172,7 +172,7 @@ class Subscribe:
         return self._subscribe("window_name_change", func)
 
     def client_new(self, func):
-        """Called before Qtile starts managing a new client
+        """Called before Lavinder starts managing a new client
 
         Use this hook to declare windows static, or add them to a group on
         startup. This hook is not called for internal windows.
@@ -196,7 +196,7 @@ class Subscribe:
         return self._subscribe("client_new", func)
 
     def client_managed(self, func):
-        """Called after Qtile starts managing a new client
+        """Called after Lavinder starts managing a new client
 
         Called after a window is assigned to a group, or when a window is made
         static.  This hook is not called for internal windows.
@@ -352,7 +352,7 @@ class Unsubscribe(Subscribe):
         try:
             lst.remove(func)
         except ValueError:
-            raise utils.QtileError(
+            raise utils.LavinderError(
                 "Tried to unsubscribe a hook that was not"
                 " currently subscribed"
             )
@@ -363,7 +363,7 @@ unsubscribe = Unsubscribe()
 
 def fire(event, *args, **kwargs):
     if event not in subscribe.hooks:
-        raise utils.QtileError("Unknown event: %s" % event)
+        raise utils.LavinderError("Unknown event: %s" % event)
     if event not in SKIPLOG:
         logger.debug("Internal event: %s(%s, %s)", event, args, kwargs)
     for i in subscriptions.get(event, []):

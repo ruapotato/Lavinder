@@ -3,7 +3,7 @@ Installing on Debian or Ubuntu
 ==============================
 
 On recent Ubuntu (17.04 Zesty+) and Debian unstable (Sid) versions, there are
-Qtile packages available via:
+Lavinder packages available via:
 
 .. code-block:: bash
 

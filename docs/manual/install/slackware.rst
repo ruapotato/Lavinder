@@ -2,7 +2,7 @@
 Installing on Slackware
 =======================
 
-Qtile is available on the `SlackBuilds.org <https://slackbuilds.org/repository/14.2/desktop/lavinder/>`_ as:
+Lavinder is available on the `SlackBuilds.org <https://slackbuilds.org/repository/14.2/desktop/lavinder/>`_ as:
 
 ======================= =======================
 Package Name            Description
@@ -13,7 +13,7 @@ lavinder                   stable branch (release)
 Using slpkg (third party package manager)
 =========================================
 
-The easy way to install Qtile is with `slpkg <https://github.com/dslackw/slpkg>`_. For example:
+The easy way to install Lavinder is with `slpkg <https://github.com/dslackw/slpkg>`_. For example:
 
 .. code-block:: bash
 

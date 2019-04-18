@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Qtile documentation build configuration file, created by
+# Lavinder documentation build configuration file, created by
 # sphinx-quickstart on Sat Feb 11 15:20:21 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -85,7 +85,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Qtile'
+project = u'Lavinder'
 copyright = u'2008-2018, Aldo Cortesi and contributers'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -212,7 +212,7 @@ html_use_index = True
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Qtiledoc'
+htmlhelp_basename = 'Lavinderdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -231,7 +231,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Qtile.tex', u'Qtile Documentation',
+  ('index', 'Lavinder.tex', u'Lavinder Documentation',
    u'Aldo Cortesi', 'manual'),
 ]
 
@@ -261,9 +261,9 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('man/lavinder', 'lavinder', u'Qtile Documentation',
+    ('man/lavinder', 'lavinder', u'Lavinder Documentation',
      [u'Tycho Andersen'], 1),
-    ('man/qshell', 'qshell', u'Qtile Documentation',
+    ('man/qshell', 'qshell', u'Lavinder Documentation',
      [u'Tycho Andersen'], 1),
 ]
 
@@ -277,8 +277,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Qtile', u'Qtile Documentation',
-   u'Aldo Cortesi', 'Qtile', 'A hackable tiling window manager.',
+  ('index', 'Lavinder', u'Lavinder Documentation',
+   u'Aldo Cortesi', 'Lavinder', 'A hackable tiling window manager.',
    'Miscellaneous'),
 ]
 

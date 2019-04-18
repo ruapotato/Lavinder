@@ -2,17 +2,17 @@
 Frequently Asked Questions
 ==========================
 
-Why the name Qtile?
+Why the name Lavinder?
 ===================
 
 Users often wonder, why the Q? Does it have something to do with Qt? No. Below
 is an IRC excerpt where cortesi explains the great trial that ultimately
-brought Qtile into existence, thanks to the benevolence of the Open Source
+brought Lavinder into existence, thanks to the benevolence of the Open Source
 Gods. Praise be to the OSG!
 
 ::
 
-    ramnes:  what does Qtile mean?
+    ramnes:  what does Lavinder mean?
     ramnes:  what's the Q?
     @tych0:  ramnes: it doesn't :)
     @tych0:  cortesi was just looking for the first letter that wasn't registered
@@ -67,7 +67,7 @@ command. On my system, the output looks like this:
 My "pointer mouse cursor" isn't the one I expect it to be!
 ==========================================================
 
-Qtile should set the default cursor to left_ptr, you must install xcb-util-cursor if you want support for themed cursors.
+Lavinder should set the default cursor to left_ptr, you must install xcb-util-cursor if you want support for themed cursors.
 
 LibreOffice menus don't appear or don't stay visible
 ====================================================

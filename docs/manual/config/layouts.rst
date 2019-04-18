@@ -3,11 +3,11 @@ Layouts
 =======
 
 A layout is an algorithm for laying out windows in a group on your screen.
-Since Qtile is a tiling window manager, this usually means that we try to use
+Since Lavinder is a tiling window manager, this usually means that we try to use
 space as efficiently as possible, and give the user ample commands that can be
 bound to keys to interact with layouts.
 
-The ``layouts`` variable defines the list of layouts you will use with Qtile.
+The ``layouts`` variable defines the list of layouts you will use with Lavinder.
 The first layout in the list is the default. If you define more than one
 layout, you will probably also want to define key bindings to let you switch to
 the next and previous layouts.

@@ -100,7 +100,7 @@ class SimpleDirectiveMixin:
         return node.children
 
 
-class QtileClass(SimpleDirectiveMixin, Directive):
+class LavinderClass(SimpleDirectiveMixin, Directive):
     optional_arguments = 2
 
     def make_rst(self):
@@ -147,7 +147,7 @@ class QtileClass(SimpleDirectiveMixin, Directive):
             yield line
 
 
-class QtileHooks(SimpleDirectiveMixin, Directive):
+class LavinderHooks(SimpleDirectiveMixin, Directive):
     def make_rst(self):
         module, class_name = self.arguments[0].rsplit('.', 1)
         obj = import_object(module, class_name)
@@ -157,7 +157,7 @@ class QtileHooks(SimpleDirectiveMixin, Directive):
                 yield line
 
 
-class QtileModule(SimpleDirectiveMixin, Directive):
+class LavinderModule(SimpleDirectiveMixin, Directive):
     # :baseclass: <base class path>
     # :no-commands:
     # :no-config:
@@ -191,6 +191,6 @@ class QtileModule(SimpleDirectiveMixin, Directive):
 
 
 def setup(app):
-    app.add_directive('lavinder_class', QtileClass)
-    app.add_directive('lavinder_hooks', QtileHooks)
-    app.add_directive('lavinder_module', QtileModule)
+    app.add_directive('lavinder_class', LavinderClass)
+    app.add_directive('lavinder_hooks', LavinderHooks)
+    app.add_directive('lavinder_module', LavinderModule)

@@ -21,7 +21,7 @@
 # SOFTWARE.
 """
     This program is carefully crafted to exercise a number of corner-cases in
-    Qtile.
+    Lavinder.
 """
 import sys
 import time

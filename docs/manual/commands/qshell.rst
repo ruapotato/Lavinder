@@ -2,8 +2,8 @@
 qshell
 ======
 
-The Qtile command shell is a command-line shell interface that provides access
-to the full complement of Qtile command functions. The shell features command
+The Lavinder command shell is a command-line shell interface that provides access
+to the full complement of Lavinder command functions. The shell features command
 name completion, and full command documentation can be accessed from the shell
 itself. The shell uses GNU Readline when it's available, so the interface can
 be configured to, for example, obey VI keybindings with an appropriate
@@ -53,7 +53,7 @@ should be used in scripts and key bindings:
 Live Documentation
 ==================
 
-The shell ``help`` command provides the canonical documentation for the Qtile
+The shell ``help`` command provides the canonical documentation for the Lavinder
 API:
 
 .. code-block:: bash

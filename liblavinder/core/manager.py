@@ -35,15 +35,14 @@ import xcffib.xinerama
 import xcffib.xproto
 import time
 import warnings
-import tracemalloc
 
 from ..config import Drag, Click, Screen, Match, Rule
 from ..config import ScratchPad as ScratchPadConfig
 from ..group import _Group
 from ..scratchpad import ScratchPad
 from ..log_utils import logger
-from ..state import QtileState
-from ..utils import QtileError, get_cache_dir
+from ..state import LavinderState
+from ..utils import LavinderError, get_cache_dir
 from ..widget.base import _Widget
 from ..extension.base import _Extension
 from .. import command
@@ -65,7 +64,7 @@ def _import_module(module_name, dir_path):
     return module
 
 
-class Qtile(command.CommandObject):
+class Lavinder(command.CommandObject):
     """This object is the `root` of the command graph"""
     def __init__(
         self,
@@ -81,11 +80,12 @@ class Qtile(command.CommandObject):
 
         self._eventloop = None
         self._finalize = False
+        self.mouse_position = (0,0)
 
         if not display_name:
             display_name = os.environ.get("DISPLAY")
             if not display_name:
-                raise QtileError("No DISPLAY set.")
+                raise LavinderError("No DISPLAY set.")
 
         if not fname:
             # Dots might appear in the host part of the display name
@@ -344,7 +344,7 @@ class Qtile(command.CommandObject):
             self._eventloop.close()
             self._eventloop = None
         if self._restart:
-            logger.warning('Restarting Qtile with os.execv(...)')
+            logger.warning('Restarting Lavinder with os.execv(...)')
             os.execv(*self._restart)
 
     def _process_fake_screens(self):
@@ -427,7 +427,7 @@ class Qtile(command.CommandObject):
             keysym = xcbq.get_keysym(key.key)
             modmask = xcbq.translate_masks(key.modifiers)
         except xcbq.XCBQError as e:
-            raise utils.QtileError(e)
+            raise utils.LavinderError(e)
         self.keys_map[(keysym, modmask & self.valid_mask)] = key
         code = self.conn.keysym_to_keycode(keysym)
         for amask in self._auto_modmasks():
@@ -444,7 +444,7 @@ class Qtile(command.CommandObject):
             keysym = xcbq.get_keysym(key.key)
             modmask = xcbq.translate_masks(key.modifiers)
         except xcbq.XCBQError as e:
-            raise utils.QtileError(e)
+            raise utils.LavinderError(e)
         key_index = (keysym, modmask & self.valid_mask)
         if key_index not in self.keys_map:
             return
@@ -654,7 +654,7 @@ class Qtile(command.CommandObject):
             try:
                 modmask = xcbq.translate_masks(i.modifiers)
             except xcbq.XCBQError as e:
-                raise utils.QtileError(e)
+                raise utils.LavinderError(e)
             if isinstance(i, Click) and i.focus:
                 # Make a freezing grab on mouse button to gain focus
                 # Event will propagate to target window
@@ -683,7 +683,7 @@ class Qtile(command.CommandObject):
         """Returns a chain of targets that can handle this event
 
         Finds functions named `handle_X`, either on the window object itself or
-        on the Qtile instance, where X is the event name (e.g.  EnterNotify,
+        on the Lavinder instance, where X is the event name (e.g.  EnterNotify,
         ConfigureNotify, etc).
 
         The event will be passed to each target in turn for handling, until one
@@ -984,6 +984,7 @@ class Qtile(command.CommandObject):
         self.conn.conn.flush()
 
     def handle_ButtonPress(self, e):  # noqa: N802
+        self.mouse_position = (e.event_x, e.event_y)
         button_code = e.detail
         state = e.state
         if self.numlock_mask:
@@ -994,7 +995,7 @@ class Qtile(command.CommandObject):
             try:
                 modmask = xcbq.translate_masks(m.modifiers)
             except xcbq.XCBQError as e:
-                raise utils.QtileError(e)
+                raise utils.LavinderError(e)
             if not m or modmask & self.valid_mask != state & self.valid_mask:
                 logger.info("Ignoring unknown button: %s" % button_code)
                 continue
@@ -1056,6 +1057,7 @@ class Qtile(command.CommandObject):
                 self.root.ungrab_pointer()
 
     def handle_MotionNotify(self, e):  # noqa: N802
+        self.mouse_position = (e.event_x, e.event_y)
         if self._drag is None:
             return
         ox, oy, rx, ry, cmd = self._drag
@@ -1134,7 +1136,7 @@ class Qtile(command.CommandObject):
         hook.fire("screen_change", self, e)
 
     def focus_screen(self, n, warp=True):
-        """Have Qtile move to screen and put focus there"""
+        """Have Lavinder move to screen and put focus there"""
         if n >= len(self.screens):
             return
         old = self.current_screen
@@ -1276,6 +1278,9 @@ class Qtile(command.CommandObject):
         """Prints info for all groups"""
         warnings.warn("The `get_info` command is deprecated, use `groups`", DeprecationWarning)
         return self.cmd_groups()
+
+    def get_mouse_position(self):
+      return self.mouse_position
 
     def cmd_display_kb(self, *args):
         """Display table of key bindings"""
@@ -1431,7 +1436,7 @@ class Qtile(command.CommandObject):
             argv.append('--no-spawn')
         buf = io.BytesIO()
         try:
-            pickle.dump(QtileState(self), buf, protocol=0)
+            pickle.dump(LavinderState(self), buf, protocol=0)
         except:  # noqa: E722
             logger.error("Unable to pickle lavinder state")
         argv = [s for s in argv if not s.startswith('--with-state')]
@@ -1523,7 +1528,7 @@ class Qtile(command.CommandObject):
             return int(pid)
 
     def cmd_status(self):
-        """Return "OK" if Qtile is running"""
+        """Return "OK" if Lavinder is running"""
         return "OK"
 
     def cmd_sync(self):
@@ -1567,11 +1572,11 @@ class Qtile(command.CommandObject):
         ]
 
     def cmd_lavinder_info(self):
-        """Returns a dictionary of info on the Qtile instance"""
+        """Returns a dictionary of info on the Lavinder instance"""
         return dict(socketname=self.fname)
 
     def cmd_shutdown(self):
-        """Quit Qtile"""
+        """Quit Lavinder"""
         self.stop()
 
     def cmd_switch_groups(self, groupa, groupb):
@@ -1700,7 +1705,7 @@ class Qtile(command.CommandObject):
 
     def cmd_lavindercmd(self, prompt="command",
                      widget="prompt", messenger="xmessage"):
-        """ Execute a Qtile command using the client syntax
+        """ Execute a Lavinder command using the client syntax
 
         Tab completion aids navigation of the command tree
 
@@ -1843,7 +1848,7 @@ class Qtile(command.CommandObject):
     def cmd_get_state(self):
         """Get pickled state for restarting lavinder"""
         buf = io.BytesIO()
-        pickle.dump(QtileState(self), buf, protocol=0)
+        pickle.dump(LavinderState(self), buf, protocol=0)
         state = buf.getvalue().decode()
         logger.debug('State = ')
         logger.debug(''.join(state.split('\n')))
@@ -1854,6 +1859,8 @@ class Qtile(command.CommandObject):
 
         Running tracemalloc is required for lavinder-top
         """
+        import tracemalloc
+
         if not tracemalloc.is_tracing():
             tracemalloc.start()
         else:
@@ -1861,6 +1868,8 @@ class Qtile(command.CommandObject):
 
     def cmd_tracemalloc_dump(self):
         """Dump tracemalloc snapshot"""
+        import tracemalloc
+
         if not tracemalloc.is_tracing():
             return [False, "Trace not started"]
         cache_directory = get_cache_dir()

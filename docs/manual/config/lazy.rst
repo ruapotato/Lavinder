@@ -49,9 +49,9 @@ General functions
     * - ``lazy.spawncmd()``
       - Open command prompt on the bar. See prompt widget.
     * - ``lazy.restart()``
-      - Restart Qtile and reload its config. It won't close your windows
+      - Restart Lavinder and reload its config. It won't close your windows
     * - ``lazy.shutdown()``
-      - Close the whole Qtile
+      - Close the whole Lavinder
 
 Group functions
 ---------------

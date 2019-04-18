@@ -1,5 +1,5 @@
 ================
-Hacking on Qtile
+Hacking on Lavinder
 ================
 
 Requirements
@@ -28,7 +28,7 @@ Or, on Python 2:
 Building cffi module
 ====================
 
-Qtile ships with a small in-tree pangocairo binding built using cffi,
+Lavinder ships with a small in-tree pangocairo binding built using cffi,
 ``pangocffi.py``, and also binds to xcursor with cffi.  The bindings are not
 built at run time and will have to be generated manually when the code is
 downloaded or when any changes are made to the cffi library.  This can be done
@@ -41,15 +41,15 @@ by calling:
 Using Xephyr and the test suite
 ===============================
 
-Qtile has a very extensive test suite, using the Xephyr nested X server. When
-tests are run, a nested X server with a nested instance of Qtile is fired up,
-and then tests interact with the Qtile instance through the client API. The
+Lavinder has a very extensive test suite, using the Xephyr nested X server. When
+tests are run, a nested X server with a nested instance of Lavinder is fired up,
+and then tests interact with the Lavinder instance through the client API. The
 fact that we can do this is a great demonstration of just how completely
-scriptable Qtile is. In fact, Qtile is designed expressly to be scriptable
+scriptable Lavinder is. In fact, Lavinder is designed expressly to be scriptable
 enough to allow unit testing in a nested environment.
 
-The Qtile repo includes a tiny helper script to let you quickly pull up a
-nested instance of Qtile in Xephyr, using your current configuration.
+The Lavinder repo includes a tiny helper script to let you quickly pull up a
+nested instance of Lavinder in Xephyr, using your current configuration.
 Run it from the top-level of the repository, like this:
 
 .. code-block:: bash
@@ -67,7 +67,7 @@ In practice, the development cycle looks something like this:
 Second X Session
 ================
 
-Some users prefer to test Qtile in a second, completely separate X session:
+Some users prefer to test Lavinder in a second, completely separate X session:
 Just switch to a new tty and run ``startx`` normally to use the ``~/.xinitrc``
 X startup script.
 
@@ -94,14 +94,14 @@ Capturing an ``xtrace``
 =======================
 
 Occasionally, a bug will be low level enough to require an ``xtrace`` of
-Qtile's conversations with the X server. To capture one of these, create an
+Lavinder's conversations with the X server. To capture one of these, create an
 ``xinitrc`` or similar file with:
 
 .. code-block:: bash
 
   exec xtrace lavinder >> ~/lavinder.log
 
-This will put the xtrace output in Qtile's logfile as well. You can then
+This will put the xtrace output in Lavinder's logfile as well. You can then
 demonstrate the bug, and paste the contents of this file into the bug report.
 
 Coding style

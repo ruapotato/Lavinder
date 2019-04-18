@@ -1,5 +1,5 @@
 =======================================
-Everything you need to know about Qtile
+Everything you need to know about Lavinder
 =======================================
 
 Getting started

@@ -240,7 +240,7 @@ def find_sockfile(display=None):
 
 
 class Client(_CommandRoot):
-    """Exposes a command tree used to communicate with a running instance of Qtile"""
+    """Exposes a command tree used to communicate with a running instance of Lavinder"""
     def __init__(self, fname=None, is_json=False):
         if not fname:
             fname = find_sockfile()

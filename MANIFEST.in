@@ -6,14 +6,13 @@ include CONTRIBUTING.md
 
 exclude .coveragerc
 exclude tox.ini
-exclude requirements.in
 exclude requirements.txt
 exclude requirements-dev.txt
-exclude libqtile/_ffi*.py
+exclude liblavinder/_ffi*.py
 exclude Makefile
 exclude dev.sh
 
-graft libqtile/resources
+graft liblavinder/resources
 graft resources
 
 prune bin
@@ -21,7 +20,7 @@ prune docs
 prune scripts
 prune test
 prune rpm
-include bin/dqtile-cmd
+include bin/dlavinder-cmd
 include bin/iqshell
 
 recursive-exclude * __pycache__

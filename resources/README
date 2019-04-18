@@ -1,4 +1,4 @@
-objgraph.dot: The Qtile object graph, in graphviz dot format. Render like so:
+objgraph.dot: The Lavinder object graph, in graphviz dot format. Render like so:
     circo -Tpng objgraph.dot > objgraph.png
 
 lavinder.desktop: A desktop file for lavinder telling session managers about lavinder

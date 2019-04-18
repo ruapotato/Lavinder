@@ -131,12 +131,12 @@ class WindowVisibilityToggler:
         """unsubscribe all hooks"""
         try:
             hook.unsubscribe.client_focus(self.on_focus_change)
-        except utils.QtileError as err:
+        except utils.LavinderError as err:
             logger.exception("Scratchpad failed to unsubscribe on_focus_change"
                              ": %s" % err)
         try:
             hook.unsubscribe.setgroup(self.on_focus_change)
-        except utils.QtileError as err:
+        except utils.LavinderError as err:
             logger.exception("Scratchpad failed to unsubscribe on_focus_change"
                              ": %s" % err)
 

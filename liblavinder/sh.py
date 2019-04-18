@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """
-    A command shell for Qtile.
+    A command shell for Lavinder.
 """
 
 import fcntl
@@ -45,7 +45,7 @@ def terminal_width():
 
 
 class QSh:
-    """Qtile shell instance"""
+    """Lavinder shell instance"""
     def __init__(self, client, completekey="tab"):
         self.clientroot = client
         self.current = client

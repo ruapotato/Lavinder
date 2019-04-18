@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 
-class QtileState:
+class LavinderState:
     """Represents the state of the lavinder object
 
     Primarily used for restoring state across restarts; any additional state
@@ -42,8 +42,8 @@ class QtileState:
 
     def apply(self, lavinder):
         """
-        Rearrange the windows in the specified Qtile object according to this
-        QtileState.
+        Rearrange the windows in the specified Lavinder object according to this
+        LavinderState.
         """
         for (group, layout, label) in self.groups:
             try:

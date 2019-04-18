@@ -78,7 +78,7 @@ def make_lavinder():
         action="store",
         default=None,
         dest="socket",
-        help='Path to Qtile comms socket.'
+        help='Path to Lavinder comms socket.'
     )
     parser.add_argument(
         "-n", "--no-spawn",
@@ -98,7 +98,7 @@ def make_lavinder():
         '--with-state',
         default=None,
         dest='state',
-        help='Pickled QtileState object (typically used only internally)',
+        help='Pickled LavinderState object (typically used only internally)',
     )
     options = parser.parse_args()
     log_level = getattr(logging, options.log_level)
@@ -116,7 +116,7 @@ def make_lavinder():
     # XXX: the import is here because we need to call init_log
     # before start importing stuff
     from liblavinder.core import manager
-    return manager.Qtile(
+    return manager.Lavinder(
         kore,
         config,
         fname=options.socket,
@@ -131,5 +131,5 @@ def main():
     try:
         q.loop()
     except Exception:
-        logger.exception('Qtile crashed')
+        logger.exception('Lavinder crashed')
     logger.info('Exiting...')
