@@ -1,5 +1,5 @@
 dlavinder-cmd
-==========
+==============
 
 A Rofi/dmenu interface to lavinder-cmd. Accepts all arguments of lavinder-cmd.
 
@@ -7,12 +7,12 @@ Examples:
 ---------
 
 Output of ``dlavinder-cmd -o cmd``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: dlavinder-cmd.png
 
 Output of ``dlavinder-cmd -h``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: text
 

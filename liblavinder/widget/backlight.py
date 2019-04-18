@@ -99,4 +99,4 @@ class Backlight(base.InLoopPollText):
             new = min(now + self.step, 100)
         if new != now:
             self.future = self.lavinder.run_in_executor(self.change_backlight,
-                                                     new)
+                                                        new)

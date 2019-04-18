@@ -1200,7 +1200,8 @@ class Window(_Window):
                     logger.info("Focusing window")
                     self.lavinder.current_screen.set_group(self.group)
                     self.group.focus(self)
-                elif focus_behavior == "smart" and self.group.screen and self.group.screen == self.lavinder.current_screen:
+                elif (focus_behavior == "smart" and self.group.screen and
+                        self.group.screen == self.lavinder.current_screen):
                     logger.info("Focusing window")
                     self.lavinder.current_screen.set_group(self.group)
                     self.group.focus(self)
