@@ -1,6 +1,6 @@
 import pytest
-from libqtile.widget import Volume
-from libqtile import images
+from liblavinder.widget import Volume
+from liblavinder import images
 import cairocffi
 from .conftest import TEST_DIR
 

@@ -2,18 +2,18 @@
 Commands API
 ============
 
-Qtile's command API is based on a graph of objects, where each object has a set
+Lavinder's command API is based on a graph of objects, where each object has a set
 of associated commands. The graph and object commands are used in a number of
 different places:
 
-* Commands can be :doc:`bound to keys </manual/config/keys>` in the Qtile
+* Commands can be :doc:`bound to keys </manual/config/keys>` in the Lavinder
   configuration file.
 * Commands can be :doc:`called through qshell </manual/commands/qshell>`, the
-  Qtile shell.
+  Lavinder shell.
 * The qsh can also be hooked into a Jupyter kernel :doc:`called iqshell
   </manual/commands/iqshell>`.
 * Commands can be :doc:`called from a script </manual/commands/scripting>` to
-  interact with Qtile from Python.
+  interact with Lavinder from Python.
 
 If the explanation below seems a bit complex, please take a moment to explore
 the API using the ``qshell`` command shell. Command lists and detailed
@@ -23,7 +23,7 @@ documentation can be accessed from its built-in help command.
 Object Graph
 ============
 
-The objects in Qtile's object graph come in seven flavours, matching the seven
+The objects in Lavinder's object graph come in seven flavours, matching the seven
 basic components of the window manager: ``layouts``, ``windows``, ``groups``,
 ``bars``, ``widgets``, ``screens``, and a special ``root`` node.  Objects are
 addressed by a path specification that starts at the root, and follows the
@@ -44,7 +44,7 @@ the Client object:
 
 .. code-block:: python
 
-    from libqtile.command import Client
+    from liblavinder.command import Client
     c = Client()
     print c.status()
 
@@ -58,7 +58,7 @@ so:
 
 To access a specific group, regardless of whether or not it is current, we use
 the Python containment syntax. This command sends group "b" to screen 1 (by the
-:meth:`libqtile.config.Group.to_screen` method):
+:meth:`liblavinder.config.Group.to_screen` method):
 
 .. code-block:: python
 
@@ -81,7 +81,7 @@ node, and we get an exception:
 
 .. code-block:: python
 
-    libqtile.command.CommandError: No object screen in path 'group['b'].screen'
+    liblavinder.command.CommandError: No object screen in path 'group['b'].screen'
 
 
 The graph is not a tree, since it can contain cycles. This path (redundantly)

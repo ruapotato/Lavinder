@@ -1,9 +1,9 @@
 """
-test_images.py contains unittests for libqtile.images.Img
+test_images.py contains unittests for liblavinder.images.Img
 and its supporting code.
 """
 import pytest
-import libqtile.images as images
+import liblavinder.images as images
 import cairocffi
 import os
 from os import path

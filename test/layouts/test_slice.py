@@ -27,8 +27,8 @@
 
 import pytest
 
-from libqtile import layout
-import libqtile.config
+from liblavinder import layout
+import liblavinder.config
 from .layout_utils import assert_dimensions, assert_focused, assert_focus_path
 from ..conftest import no_xinerama
 
@@ -37,7 +37,7 @@ class SliceConfig:
     auto_fullscreen = True
     main = None
     groups = [
-        libqtile.config.Group("a"),
+        liblavinder.config.Group("a"),
     ]
     layouts = [
         layout.Slice(side='left', width=200, wname='slice',
@@ -49,7 +49,7 @@ class SliceConfig:
         layout.Slice(side='bottom', width=200, wname='slice',
                      fallback=layout.Stack(num_stacks=1, border_width=0)),
     ]
-    floating_layout = libqtile.layout.floating.Floating()
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = []
     mouse = []
     screens = []
@@ -57,80 +57,80 @@ class SliceConfig:
 
 
 def slice_config(x):
-    return no_xinerama(pytest.mark.parametrize("qtile", [SliceConfig], indirect=True)(x))
+    return no_xinerama(pytest.mark.parametrize("lavinder", [SliceConfig], indirect=True)(x))
 
 
 @slice_config
-def test_no_slice(qtile):
-    qtile.test_window('one')
-    assert_dimensions(qtile, 200, 0, 600, 600)
-    qtile.test_window('two')
-    assert_dimensions(qtile, 200, 0, 600, 600)
+def test_no_slice(lavinder):
+    lavinder.test_window('one')
+    assert_dimensions(lavinder, 200, 0, 600, 600)
+    lavinder.test_window('two')
+    assert_dimensions(lavinder, 200, 0, 600, 600)
 
 
 @slice_config
-def test_slice_first(qtile):
-    qtile.test_window('slice')
-    assert_dimensions(qtile, 0, 0, 200, 600)
-    qtile.test_window('two')
-    assert_dimensions(qtile, 200, 0, 600, 600)
+def test_slice_first(lavinder):
+    lavinder.test_window('slice')
+    assert_dimensions(lavinder, 0, 0, 200, 600)
+    lavinder.test_window('two')
+    assert_dimensions(lavinder, 200, 0, 600, 600)
 
 
 @slice_config
-def test_slice_last(qtile):
-    qtile.test_window('one')
-    assert_dimensions(qtile, 200, 0, 600, 600)
-    qtile.test_window('slice')
-    assert_dimensions(qtile, 0, 0, 200, 600)
+def test_slice_last(lavinder):
+    lavinder.test_window('one')
+    assert_dimensions(lavinder, 200, 0, 600, 600)
+    lavinder.test_window('slice')
+    assert_dimensions(lavinder, 0, 0, 200, 600)
 
 
 @slice_config
-def test_slice_focus(qtile):
-    qtile.test_window('one')
-    assert_focused(qtile, 'one')
-    two = qtile.test_window('two')
-    assert_focused(qtile, 'two')
-    slice = qtile.test_window('slice')
-    assert_focused(qtile, 'slice')
-    assert_focus_path(qtile, 'slice')
-    qtile.test_window('three')
-    assert_focus_path(qtile, 'two', 'one', 'slice', 'three')
-    qtile.kill_window(two)
-    assert_focus_path(qtile, 'one', 'slice', 'three')
-    qtile.kill_window(slice)
-    assert_focus_path(qtile, 'one', 'three')
-    slice = qtile.test_window('slice')
-    assert_focus_path(qtile, 'three', 'one', 'slice')
+def test_slice_focus(lavinder):
+    lavinder.test_window('one')
+    assert_focused(lavinder, 'one')
+    two = lavinder.test_window('two')
+    assert_focused(lavinder, 'two')
+    slice = lavinder.test_window('slice')
+    assert_focused(lavinder, 'slice')
+    assert_focus_path(lavinder, 'slice')
+    lavinder.test_window('three')
+    assert_focus_path(lavinder, 'two', 'one', 'slice', 'three')
+    lavinder.kill_window(two)
+    assert_focus_path(lavinder, 'one', 'slice', 'three')
+    lavinder.kill_window(slice)
+    assert_focus_path(lavinder, 'one', 'three')
+    slice = lavinder.test_window('slice')
+    assert_focus_path(lavinder, 'three', 'one', 'slice')
 
 
 @slice_config
-def test_all_slices(qtile):
-    qtile.test_window('slice')  # left
-    assert_dimensions(qtile, 0, 0, 200, 600)
-    qtile.c.next_layout()  # right
-    assert_dimensions(qtile, 600, 0, 200, 600)
-    qtile.c.next_layout()  # top
-    assert_dimensions(qtile, 0, 0, 800, 200)
-    qtile.c.next_layout()  # bottom
-    assert_dimensions(qtile, 0, 400, 800, 200)
-    qtile.c.next_layout()  # left again
-    qtile.test_window('one')
-    assert_dimensions(qtile, 200, 0, 600, 600)
-    qtile.c.next_layout()  # right
-    assert_dimensions(qtile, 0, 0, 600, 600)
-    qtile.c.next_layout()  # top
-    assert_dimensions(qtile, 0, 200, 800, 400)
-    qtile.c.next_layout()  # bottom
-    assert_dimensions(qtile, 0, 0, 800, 400)
+def test_all_slices(lavinder):
+    lavinder.test_window('slice')  # left
+    assert_dimensions(lavinder, 0, 0, 200, 600)
+    lavinder.c.next_layout()  # right
+    assert_dimensions(lavinder, 600, 0, 200, 600)
+    lavinder.c.next_layout()  # top
+    assert_dimensions(lavinder, 0, 0, 800, 200)
+    lavinder.c.next_layout()  # bottom
+    assert_dimensions(lavinder, 0, 400, 800, 200)
+    lavinder.c.next_layout()  # left again
+    lavinder.test_window('one')
+    assert_dimensions(lavinder, 200, 0, 600, 600)
+    lavinder.c.next_layout()  # right
+    assert_dimensions(lavinder, 0, 0, 600, 600)
+    lavinder.c.next_layout()  # top
+    assert_dimensions(lavinder, 0, 200, 800, 400)
+    lavinder.c.next_layout()  # bottom
+    assert_dimensions(lavinder, 0, 0, 800, 400)
 
 
 @slice_config
-def test_command_propagation(qtile):
-    qtile.test_window('slice')
-    qtile.test_window('one')
-    qtile.test_window('two')
-    info = qtile.c.layout.info()
+def test_command_propagation(lavinder):
+    lavinder.test_window('slice')
+    lavinder.test_window('one')
+    lavinder.test_window('two')
+    info = lavinder.c.layout.info()
     assert info['name'] == 'slice', info['name']
-    org_height = qtile.c.window.info()['height']
-    qtile.c.layout.toggle_split()
-    assert qtile.c.window.info()['height'] != org_height
+    org_height = lavinder.c.window.info()['height']
+    lavinder.c.layout.toggle_split()
+    assert lavinder.c.window.info()['height'] != org_height

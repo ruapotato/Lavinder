@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import configurable
+from liblavinder import configurable
 
 
 class ConfigurableWithFallback(configurable.Configurable):

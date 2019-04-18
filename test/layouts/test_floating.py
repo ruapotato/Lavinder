@@ -20,8 +20,8 @@
 
 import pytest
 
-from libqtile import layout
-import libqtile.config
+from liblavinder import layout
+import liblavinder.config
 from .layout_utils import assert_focused
 from ..conftest import no_xinerama
 
@@ -30,12 +30,12 @@ class FloatingConfig:
     auto_fullscreen = True
     main = None
     groups = [
-        libqtile.config.Group("a"),
+        liblavinder.config.Group("a"),
     ]
     layouts = [
         layout.Floating()
     ]
-    floating_layout = libqtile.layout.floating.Floating()
+    floating_layout = liblavinder.layout.floating.Floating()
     keys = []
     mouse = []
     screens = []
@@ -43,12 +43,12 @@ class FloatingConfig:
 
 
 def floating_config(x):
-    return no_xinerama(pytest.mark.parametrize("qtile", [FloatingConfig], indirect=True)(x))
+    return no_xinerama(pytest.mark.parametrize("lavinder", [FloatingConfig], indirect=True)(x))
 
 
 @floating_config
-def test_float_next_prev_window(qtile):
-    self = qtile
+def test_float_next_prev_window(lavinder):
+    self = lavinder
 
     # spawn three windows
     self.test_window("one")

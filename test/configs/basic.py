@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import config
+from liblavinder import config
 
 keys = [
     config.Key(["control"], "k", "focusnext")

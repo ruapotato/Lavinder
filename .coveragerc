@@ -1,8 +1,8 @@
 [run]
-source = libqtile
+source = liblavinder
 
 [report]
 omit =
-    libqtile/interactive/*
-    libqtile/scripts/*
-    libqtile/ffi_build.py
+    liblavinder/interactive/*
+    liblavinder/scripts/*
+    liblavinder/ffi_build.py
