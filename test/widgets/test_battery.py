@@ -2,6 +2,10 @@ import pytest
 from liblavinder.widget import Battery, BatteryIcon, battery
 from liblavinder.widget.battery import BatteryState, BatteryStatus
 from liblavinder import images
+<<<<<<< HEAD
+=======
+
+>>>>>>> 555273df46f13500d2a4bc0e83c794c314dc5920
 import cairocffi
 from .conftest import TEST_DIR
 
