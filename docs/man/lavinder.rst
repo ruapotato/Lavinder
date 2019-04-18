@@ -11,7 +11,7 @@ DESCRIPTION
 
 ``lavinder`` runs Lavinder on the current $DISPLAY. Lavinder is a tiling window manager
 written in python. Complete configuration information is available online at
-http://docs.lavinder.org.
+http://github.com/g--o/Lavinder/wiki.
 
 OPTIONS
 =======
@@ -42,4 +42,4 @@ Lavinder searches for configuration files in the following locations:
 BUGS
 ====
 
-Bugs can be reported to the issue tracker at http://github.com/lavinder/lavinder.
+Bugs can be reported to the issue tracker at http://github.com/g--o/Lavinder.
