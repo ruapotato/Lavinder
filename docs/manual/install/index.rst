@@ -104,8 +104,10 @@ to use things like notification daemon or mpris widgets, you'll need to
 install python-gobject and python-dbus. Lavinder will run fine without these,
 although it will emit a warning that some things won't work.
 
-Lavinder
---------
+==== BASE ====
+Qtile
+-----
+==== BASE ====
 
 With the dependencies in place, you can now install lavinder:
 
