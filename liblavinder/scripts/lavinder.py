@@ -106,13 +106,12 @@ def make_lavinder():
 
     kore = xcore.XCore()
     try:
-        config = confreader.Config.from_file(kore, options.configfile)
+        default_config_path = path.dirname(path.realpath(__file__))
+        default_config_path = default_config_path + "/../resources/default_config.py"
+        config = confreader.Config.from_file(kore, default_config_path)
     except Exception as e:
         logger.exception('Error while reading config file (%s)', e)
-        config = confreader.Config()
-        from liblavinder.widget import TextBox
-        widgets = config.screens[0].bottom.widgets
-        widgets.insert(0, TextBox('Config Err!'))
+        exit()
     # XXX: the import is here because we need to call init_log
     # before start importing stuff
     from liblavinder.core import manager
