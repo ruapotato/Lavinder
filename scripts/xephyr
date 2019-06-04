@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 HERE=$(dirname $(readlink -f $0))
-SCREEN_SIZE=${SCREEN_SIZE:-800x600}
+SCREEN_SIZE=`xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/'`
 XDISPLAY=:1
 LOG_LEVEL=${LOG_LEVEL:-INFO}
-if [[ -z PYTHON ]]; then
-    PYTHON=python
+if [[ -z $PYTHON ]]; then
+    PYTHON=python3
 fi
 
 Xephyr +extension RANDR -screen ${SCREEN_SIZE} ${XDISPLAY} -ac &
@@ -13,8 +13,8 @@ XEPHYR_PID=$!
 (
   sleep 1
   env DISPLAY=${XDISPLAY} ${PYTHON} "${HERE}"/../bin/lavinder -l ${LOG_LEVEL} $@ &
-  QTILE_PID=$!
+  LAVINDER_PID=$!
   env DISPLAY=${XDISPLAY} xterm &
-  wait $QTILE_PID
+  wait $LAVINDER_PID
   kill $XEPHYR_PID
 )

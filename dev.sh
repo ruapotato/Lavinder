@@ -4,11 +4,11 @@ set -x
 
 echo "Creating dev environment in ./venv..."
 
-python3.7 -m venv venv
+python3 -m venv venv
 . venv/bin/activate
-pip3.7 install -U pip setuptools
-pip3.7 install -r requirements.txt
-pip3.7 install -r requirements-dev.txt
+pip3 install -U pip setuptools
+pip3 install -r requirements.txt
+pip3 install -r requirements-dev.txt
 
 echo ""
 echo "  * Created virtualenv environment in ./venv."

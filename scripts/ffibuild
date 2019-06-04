@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "building pango"
-python ./liblavinder/pango_ffi_build.py
+python3 ./liblavinder/pango_ffi_build.py
 echo "building xcursors"
-python ./liblavinder/core/xcursors_ffi_build.py
+python3 ./liblavinder/core/xcursors_ffi_build.py
