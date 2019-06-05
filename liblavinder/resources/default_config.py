@@ -1,3 +1,4 @@
+
 # Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
 # Copyright (c) 2012 Randall Ma
@@ -286,7 +287,6 @@ def move_window(lavinder, *args):
         if abs(mouse_position[0] - point[0]) < snap_threshold:
             if abs(mouse_position[1] - point[1]) < snap_threshold:
                 mouse_position = point
-                debug(point)
 
     move = (mouse_position[0] - last_window_position[0],
             mouse_position[1] - last_window_position[1])
@@ -543,7 +543,6 @@ def screen_config(lavinder):
         # find tallest screen
         if screen.height > max_display_height:
             max_display_height = screen.height
-    debug(snap_corners)
     return [Screen(top=make_topbar(i)) for i in range(num_screens)]
 
 
