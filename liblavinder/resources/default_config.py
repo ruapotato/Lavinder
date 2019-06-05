@@ -72,6 +72,9 @@ menu_window = ""
 WIN = "mod4"
 ALT = "mod1"
 CTRL = "control"
+snap_corners = []
+snap_threshold = 25
+snap_windows = []
 menu_cmd = "xterm "
 # load janit if installed
 if shutil.which('janit') is not None:
@@ -266,14 +269,24 @@ def move_window(lavinder, *args):
     global last_drag
     global moving_win
     global display_size
+    global snap_corners
+    global snap_threshold
+    global snap_windows
 
     # reset drag window and hot coners if this is a different drag event
     if last_drag != lavinder._drag:
         hot_corner_triggered = None
         moving_win = window_with_mouse
         moving_win.cmd_bring_to_front()
+        update_window_coners(lavinder)
 
     mouse_position = lavinder.get_mouse_position()
+    # move mouse to snap_corners if close
+    for point in snap_corners + snap_windows:
+        if abs(mouse_position[0] - point[0]) < snap_threshold:
+            if abs(mouse_position[1] - point[1]) < snap_threshold:
+                mouse_position = point
+                debug(point)
 
     move = (mouse_position[0] - last_window_position[0],
             mouse_position[1] - last_window_position[1])
@@ -295,22 +308,22 @@ def move_window(lavinder, *args):
                 hot_corner_triggered = (display_size[0], display_size[1])
 
         new_win_size = [min_win_size, min_win_size]
-        # left corner resize
+        # top-left corner resize
         if hot_corner_triggered == (0, 0):
             # set new_win_size to new window size (But not smaller)
             if mouse_position[0] > new_win_size[0]:
-                if mouse_position[1] > new_win_size[1]:
-                    new_win_size[0] = mouse_position[0]
-                    new_win_size[1] = mouse_position[1]
+                new_win_size[0] = mouse_position[0]
+            if mouse_position[1] > new_win_size[1]:
+                new_win_size[1] = mouse_position[1]
             moving_win.place(0, 0, new_win_size[0], new_win_size[1], 2, None)
 
         # low-right corner resize
         elif hot_corner_triggered == (display_size[0], display_size[1]):
             # set new_win_size to new window size (But not smaller)
             if mouse_position[0] < display_size[0] - new_win_size[0]:
-                if mouse_position[1] < display_size[1] - new_win_size[1]:
-                    new_win_size[0] = display_size[0] - mouse_position[0]
-                    new_win_size[1] = display_size[1] - mouse_position[1]
+                new_win_size[0] = display_size[0] - mouse_position[0]
+            if mouse_position[1] < display_size[1] - new_win_size[1]:
+                new_win_size[1] = display_size[1] - mouse_position[1]
             moving_win.place(mouse_position[0], mouse_position[1],
                              new_win_size[0], new_win_size[1], 2, None)
 
@@ -369,6 +382,24 @@ def open_menu(lavinder, *args):
             menu_window.cmd_disable_maximize()
             menu_window.focus(warp=None)
             menu_window.cmd_bring_to_front()
+
+
+def update_window_coners(lavinder):
+    global snap_windows
+    snap_windows = []
+    for win in lavinder.windows_map:
+        win = lavinder.windows_map.get(win)
+        # add the top bar
+        if win.group is None:
+            continue
+        topleft_point = [win.x,                   win.y]
+        topright_point = [int(win.x + win.width), win.y]
+        lowright_point = [int(win.x + win.width), int(win.y + win.height)]
+        lowleft_point = [win.x,                   int(win.y + win.height)]
+        snap_windows.append(topleft_point)
+        snap_windows.append(topright_point)
+        snap_windows.append(lowright_point)
+        snap_windows.append(lowleft_point)
 
 
 # key bindings
@@ -488,6 +519,7 @@ screens = [
 def screen_config(lavinder):
     global display_size
     global max_display_height  # biggest screen height
+    global snap_corners
 
     # find screen_size
     display_size = [0, 0]
@@ -495,6 +527,14 @@ def screen_config(lavinder):
     num_screens = 0
     for screen in lavinder.conn.pseudoscreens:
         num_screens = num_screens + 1
+        # 1/2 screen snap
+        mid_point = [int(display_size[0] + screen.width/2), screen.height]
+        snap_corners.append(mid_point)
+        snap_corners.append([mid_point[0], 0])
+        # fullscreen snap
+        fullscr_point = [int(display_size[0] + screen.width), screen.height]
+        snap_corners.append(fullscr_point)
+        snap_corners.append([fullscr_point[0], 0])
         # append all screen width
         display_size[0] = display_size[0] + screen.width
         # keep last screen height
@@ -503,7 +543,7 @@ def screen_config(lavinder):
         # find tallest screen
         if screen.height > max_display_height:
             max_display_height = screen.height
-
+    debug(snap_corners)
     return [Screen(top=make_topbar(i)) for i in range(num_screens)]
 
 
