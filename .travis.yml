@@ -35,6 +35,7 @@ addons:
 
 install:
   - pip install tox
+  - pip install sh
   - if [[ $TOXENV == py* ]]; then pip install coveralls; fi
 
 script:
