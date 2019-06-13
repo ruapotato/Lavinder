@@ -30,7 +30,7 @@ from liblavinder.config import Key, Screen, Group, Drag, Click
 from liblavinder.command import lazy
 from liblavinder import layout, bar, widget, hook
 import shutil
-import sh
+#import sh
 
 
 try:
@@ -548,6 +548,6 @@ def screen_config(lavinder):
 
 def main(lavinder):
     # TODO, Remove 'sh' as dependency
-    sh.nm_applet(_bg=True)
+    # sh.nm_applet(_bg=True)
     lavinder.config.screens = screen_config(lavinder)
     lavinder.cmd_info()
