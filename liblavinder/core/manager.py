@@ -147,7 +147,10 @@ class Lavinder(command.CommandObject):
         )
 
         if config.main:
-            config.main(self)
+            try:
+                config.main(self)
+            except Exception:
+                config.main()
 
         self.dgroups = None
         if self.config.groups:
